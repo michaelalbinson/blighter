@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Blighter</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <script src="js/index.js"></script>
+</head>
+<body>
+<header>
+    <a href="/">
+        <img src="favicon.ico" alt="Blighter logo" />
+    </a>
+</header>
+<main>
+    <h2>Add a feed</h2>
+    <form method="post" action="/add-feed">
+        <label for="rss_feed">RSS Feed to Follow</label>
+        <input id="rss_feed" name="rss_feed" type="url">
+        <button type="submit">Submit</button>
+    </form>
+</main>
+<footer>
+    <ul>
+        <li><a href="/manage">Manage Feeds</a></li>
+        <li><a href="/add-feed.html">Add Feed</a></li>
+    </ul>
+</footer>
+</body>
+</html>

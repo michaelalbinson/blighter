@@ -1,5 +1,7 @@
 'use strict';
 
+import Feed from "./Feed";
+
 export default interface FeedItem {
     title: string,
     link: string,
@@ -8,5 +10,7 @@ export default interface FeedItem {
     description: string,
     categories: string|null,
     id: number,
-    feedID: number
+    content: string|null,
+    feedID: number,
+    feed: Feed|null
 }

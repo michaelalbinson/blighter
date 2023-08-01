@@ -16,6 +16,10 @@ export default class Logger {
         console.error(msg);
     }
 
+    static warn(msg: string) {
+        console.warn(msg);
+    }
+
     static info(msg: string) {
         console.log(msg);
     }

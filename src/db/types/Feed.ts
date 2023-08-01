@@ -9,5 +9,5 @@ export default interface Feed {
     id: number,
     active: boolean,
     data: any|null,
-    feedItems: FeedItem[]|null
+    feedItems: FeedItem[]|null,
 }

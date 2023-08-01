@@ -17,6 +17,20 @@ export default class RSSFeedItem extends DBObject {
         return RSSFeedItem.rows2Objects(await this._getAll());
     }
 
+    static async getActive(): Promise<FeedItem[]> {
+        return RSSFeedItem.rows2Objects(
+            await DBManager.query(`SELECT * FROM feed_item WHERE feed_id IN (
+                SELECT id FROM rss_feed WHERE active = 1
+            );`, [])
+        );
+    }
+
+    static async getSingleFeed(id: number): Promise<FeedItem[]> {
+        return RSSFeedItem.rows2Objects(
+            await DBManager.query(`SELECT * FROM feed_item WHERE feed_id = ?;`, [id])
+        );
+    }
+
     static async insert(item: FeedItem) {
         const sql = `
             INSERT INTO feed_item (
@@ -26,8 +40,9 @@ export default class RSSFeedItem extends DBObject {
                 pub_date,
                 description,
                 categories,
-                feed_id
-            ) VALUES (?, ?, ?, ?, ?, ?, ?);
+                feed_id,
+                content
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
         `;
 
         const params = [
@@ -37,7 +52,8 @@ export default class RSSFeedItem extends DBObject {
             item.pubDate,
             item.description,
             item.categories,
-            item.feedID
+            item.feedID,
+            item.content
         ];
 
         await DBManager.run(sql, params);
@@ -51,6 +67,7 @@ export default class RSSFeedItem extends DBObject {
                 title TEXT NOT NULL,
                 link TEXT NOT NULL UNIQUE,
                 author TEXT,
+                content TEXT,
                 pub_date TEXT NOT NULL,
                 description TEXT NOT NULL,
                 categories TEXT
@@ -75,7 +92,8 @@ export default class RSSFeedItem extends DBObject {
                 description: result.description,
                 categories: result.categories,
                 id: result.id,
-                feedID: result.feed_id
+                feedID: result.feed_id,
+                content: result.content
             } as FeedItem;
         });
     }

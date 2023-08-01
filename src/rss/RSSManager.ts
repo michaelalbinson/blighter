@@ -69,13 +69,18 @@ export default class RSSManager {
             feed.id = feedDb.id;
         }
 
+        await this.processFeeds([feed]);
         return feed;
     }
 
     static async fetchFeeds(): Promise<Feed[]> {
         const feeds = await RSSFeed.getAll();
         for (const feed of feeds) {
-            feed.data = await RSSManager.fetchFeedData(feed.url);
+            try {
+                feed.data = await RSSManager.fetchFeedData(feed.url);
+            } catch (e) {
+                Logger.warn(`Failed to update feed: ${e}`);
+            }
         }
 
         return await this.processFeeds(feeds);
@@ -99,7 +104,8 @@ export default class RSSManager {
                     author: item['dc:creator'],
                     pubDate: item.pubDate,
                     description: item.description || item['content:encoded']?.slice(0, 100),
-                    feedID: feed.id
+                    feedID: feed.id,
+                    content: item.content || item['content:encoded']
                 } as FeedItem);
             }
 
@@ -109,7 +115,11 @@ export default class RSSManager {
                     return;
                 }
 
-                await RSSFeedItem.insert(item);
+                try {
+                    await RSSFeedItem.insert(item);
+                } catch (e) {
+                    Logger.warn(`Insert of feed item failed: ${item.link}`);
+                }
             });
 
             await Promise.all(promises);

@@ -19,8 +19,21 @@ export default class RSSFeed extends DBObject {
         )[0];
     }
 
+    static async setActive(id: number, active: boolean): Promise<void> {
+        await DBManager.run(`UPDATE ${this.tableName()} SET active = ? WHERE id = ?`, [active, id]);
+    }
+
     static async getAll(): Promise<Feed[]> {
         return RSSFeed.rows2Objects(await this._getAll());
+    }
+
+    static async getIdMap(): Promise<Map<number, Feed>> {
+        const feeds = await RSSFeed.getAll();
+        const feedMap = new Map<number, Feed>;
+        for (let feed of feeds)
+            feedMap.set(feed.id, feed);
+
+        return feedMap;
     }
 
     static async insert(feed: Feed) {

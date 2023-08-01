@@ -1,0 +1,27 @@
+footer {
+    border-top: solid 1px var(--theme-1);
+}
+
+footer ul {
+    display: inline-block;
+}
+
+footer img.gator {
+    width: 8rem;
+    margin: 1rem 2rem;
+    float: left;
+}
+
+footer img.gator-2 {
+    transform: scale(-1, 1);
+    float: right;
+}
+
+footer .menus {
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+footer ul {
+    padding: 0;
+}

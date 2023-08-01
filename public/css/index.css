@@ -1,0 +1,78 @@
+:root {
+    --header-height: 5rem;
+    --theme-1: #ff7e00;
+    --text-color: white;
+}
+
+body {
+    background-color: #222;
+    color: var(--text-color);
+    text-align: left;
+    margin-top: calc(var(--header-height) + 1rem);
+    font-family: sans-serif;
+}
+
+h1, h2, h3, section.splash p, header li, footer li {
+    font-family: sans-serif;
+    color: var(--theme-1);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:link {
+    color: var(--theme-1);
+}
+
+a:visited {
+    color: #80693c;
+}
+
+li[role=menuitem]::marker {
+    content: none;
+}
+
+section {
+    width: 70%;
+    margin: 0 15%;
+}
+
+section.splash {
+    text-align: center;
+}
+
+section.splash h1 {
+    font-size: 5rem;
+    margin: 1rem;
+}
+
+iframe.song-frame {
+    border: 0;
+    max-width: 350px;
+    height: 442px;
+    margin: 0 1rem;
+}
+
+main li {
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid var(--text-color);
+}
+
+main li[role=menuitem]::marker {
+    content: none;
+}
+
+main li span {
+    font-size: 0.75rem;
+}
+
+main button {
+    background-color: var(--theme-1);
+    border: none;
+}

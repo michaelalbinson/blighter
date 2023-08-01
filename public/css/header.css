@@ -1,0 +1,31 @@
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--header-height);
+    width: 100%;
+    border-bottom: 1px solid var(--theme-1);
+}
+
+header img {
+    height: 80%;
+    margin: 0.5rem;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+}
+
+header li {
+    display: inline;
+    margin-right: 1rem;
+}
+
+header ul {
+    display: inline;
+    align-items: center;
+    font-size: 1rem;
+    position: absolute;
+    right: 0;
+    margin: 1.3rem 0;
+}

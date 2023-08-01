@@ -89,7 +89,7 @@ class DBManager {
 
     private static dbTrace(sql: string) {
         if (process.env.DB_TRACE)
-            Logger.info(`db.trace: ${sql.replace(/[\t\n ]{1,10}/g, ' ').trim()}`);
+            Logger.info(`db.trace: ${sql.replace(/[\t\n ]+/g, ' ').trim()}`);
     }
 }
 
