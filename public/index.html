@@ -2,9 +2,13 @@
 <html lang="en">
     <head>
         <title>Blighter</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/index.css" />
         <link rel="stylesheet" href="css/header.css" />
         <link rel="stylesheet" href="css/footer.css" />
+        <script src="js/CachedSettings.js"></script>
         <script src="js/index.js"></script>
     </head>
     <body>
@@ -15,27 +19,32 @@
             <ul role="menu">
                 <li role="menuitem"><a href="/add-feed.html">Add</a></li>
                 <li role="menuitem"><a href="/manage">Manage</a></li>
+                <li role="menuitem"><a href="/settings">Settings</a></li>
             </ul>
         </header>
         <main>
             <h2>Home</h2>
 
-            <form method="get" action="/search">
+            <div id="leading-button-group">
+                <form method="post" action="/fetch-feeds">
+                    <button type="submit" title="Refresh feeds">⇲</button>
+                </form>
+            </div>
 
+            <form id="search-form">
+                <label for="search-input" style="display: none">Search</label>
+                <input type="search" name="search" id="search-input" placeholder="🔎 Quick filter..." />
             </form>
 
-            <form method="post" action="/fetch-feeds">
-                <button type="submit">🔄</button>
-            </form>
+            <div id="list"></div>
 
-            <ul id="list">
-
-            </ul>
+            <div id="trailing-button-group"></div>
         </main>
         <footer>
             <ul>
                 <li><a href="/manage">Manage Feeds</a></li>
                 <li><a href="/add-feed.html">Add Feed</a></li>
+                <li><a href="/settings">Settings</a></li>
             </ul>
         </footer>
     </body>

@@ -21,13 +21,19 @@ export default class RSSFeedItem extends DBObject {
         return RSSFeedItem.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE feed_id IN (
                 SELECT id FROM rss_feed WHERE active = 1
-            );`, [])
+            );`)
         );
     }
 
     static async getSingleFeed(id: number): Promise<FeedItem[]> {
         return RSSFeedItem.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE feed_id = ?;`, [id])
+        );
+    }
+
+    static async getSaved(): Promise<FeedItem[]> {
+        return RSSFeedItem.rows2Objects(
+            await DBManager.query(`SELECT * FROM feed_item WHERE saved = true;`)
         );
     }
 
@@ -70,7 +76,8 @@ export default class RSSFeedItem extends DBObject {
                 content TEXT,
                 pub_date TEXT NOT NULL,
                 description TEXT NOT NULL,
-                categories TEXT
+                categories TEXT,
+                saved BOOLEAN NOT NULL DEFAULT FALSE
             );
         `;
     }
@@ -93,7 +100,8 @@ export default class RSSFeedItem extends DBObject {
                 categories: result.categories,
                 id: result.id,
                 feedID: result.feed_id,
-                content: result.content
+                content: result.content,
+                saved: result.saved
             } as FeedItem;
         });
     }

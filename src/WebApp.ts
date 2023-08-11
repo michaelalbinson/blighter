@@ -103,6 +103,10 @@ export default class WebApp {
             res.status(200).sendFile(join(process.cwd(), 'public/manage.html'));
         });
 
+        app.get('/settings', async (req, res) => {
+            res.status(200).sendFile(join(process.cwd(), 'public/settings.html'));
+        });
+
         app.listen(process.env.PORT || 3000, () => Logger.log('Example app is listening on port 3000.'));
     }
 }

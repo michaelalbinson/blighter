@@ -1,11 +1,13 @@
 :root {
     --header-height: 5rem;
     --theme-1: #ff7e00;
+    --theme-active: #ee5e00;
     --text-color: white;
+    --background-color: #222;
 }
 
 body {
-    background-color: #222;
+    background-color: var(--background-color);
     color: var(--text-color);
     text-align: left;
     margin-top: calc(var(--header-height) + 1rem);
@@ -30,8 +32,41 @@ main a:visited {
     color: #80693c;
 }
 
-li[role=menuitem]::marker {
+li[role=menuitem]::marker,
+main ul li::marker {
     content: none;
+}
+
+main ul {
+    margin-top: 1rem;
+    padding: 0;
+}
+
+main li {
+    margin: 0 1rem;
+}
+
+main form#search-form {
+    text-align: center;
+}
+
+main input#search-input {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: var(--background-color);
+    border-bottom: 2px solid var(--theme-1);
+    color: var(--text-color);
+    text-align: center;
+}
+
+main input#search-input:focus {
+    border-bottom: 2px solid var(--theme-active);
+    animation: ease-in-out 3s;
+}
+
+li:hover {
+    background-color: #252525;
 }
 
 section {
@@ -61,8 +96,10 @@ main li {
     border-bottom: 1px solid var(--text-color);
 }
 
-main li[role=menuitem]::marker {
-    content: none;
+main li:first-of-type {
+    border-top: 1px solid var(--text-color);
+    margin-top: 0.25rem;
+    padding-top: 0.25rem;
 }
 
 main li span {
@@ -72,4 +109,26 @@ main li span {
 main button {
     background-color: var(--theme-1);
     border: none;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    margin: 0.25rem;
+    cursor: pointer;
+}
+
+main button:hover {
+    background-color: var(--theme-active);
+    border: none;
+    animation: ease-in-out 1s;
+}
+
+
+div#leading-button-group {
+    text-align: right;
+    margin-right: 1rem;
+}
+
+div#trailing-button-group {
+    text-align: center;
+    margin-bottom: 1rem;
 }

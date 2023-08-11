@@ -7,7 +7,7 @@ Simple RSS feed aggregator with a local SQLite cache
 
 
 ### TODOS:
-- [ ] Search (simple)
+- [x] Search (simple)
 - [ ] Search (LLM-enabled)
 - [ ] Delete unwanted feed + relevant items
 - [ ] Filters
@@ -15,7 +15,8 @@ Simple RSS feed aggregator with a local SQLite cache
   - [ ] Unread
   - [ ] All
   - [ ] Tags
-- [ ] Fix refresh button
+- [x] Fix refresh button
 - [ ] Grouping + tagging feeds by larger topics (e.g. engineering, general tech)
 - [ ] Hardening + resiliency (prevent errors from crashing the app)
-- [ ] Pagination/reducing endless-scroll stress on main page
+- [x] Pagination/reducing endless-scroll stress on main page
+- [ ] Save article

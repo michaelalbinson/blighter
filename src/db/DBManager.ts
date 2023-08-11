@@ -37,7 +37,10 @@ class DBManager {
         });
     }
 
-    async query(sql: string, params: any[]|null): Promise<any[]>  {
+    async query(sql: string, params?: any[]): Promise<any[]>  {
+        if (!params)
+            params = [];
+
         return new Promise((resolve, reject) => {
             const handleResponse = (err: Error|null, rows: any[]) => {
                 if (err) {

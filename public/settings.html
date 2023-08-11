@@ -2,35 +2,26 @@
 <html lang="en">
 <head>
     <title>Blighter</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/footer.css" />
-    <script src="js/index.js"></script>
+    <script src="js/CachedSettings.js"></script>
+    <script src="js/settings.js"></script>
 </head>
 <body>
 <header>
     <a href="/">
         <img src="favicon.ico" alt="Blighter logo" />
     </a>
-    <ul role="menu">
-        <li role="menuitem"><a href="/add-feed.html">Add</a></li>
-        <li role="menuitem"><a href="/manage">Manage</a></li>
-    </ul>
 </header>
 <main>
-    <h2>Viewing a Single Feed</h2>
-
-    <form method="get" action="/search">
+    <h2>Client Settings</h2>
+    <form id="settings-form">
 
     </form>
-
-    <form method="post" action="/fetch-feeds">
-        <button type="submit">🔄</button>
-    </form>
-
-    <ul id="list">
-
-    </ul>
 </main>
 <footer>
     <ul>

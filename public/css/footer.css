@@ -1,27 +1,22 @@
 footer {
     border-top: solid 1px var(--theme-1);
+    text-align: center;
 }
 
 footer ul {
     display: inline-block;
+    padding: 0;
 }
 
-footer img.gator {
-    width: 8rem;
-    margin: 1rem 2rem;
-    float: left;
+footer ul li::marker {
+    content: none;
 }
 
-footer img.gator-2 {
-    transform: scale(-1, 1);
-    float: right;
+footer ul li {
+    margin: 0.5rem 0;
 }
 
 footer .menus {
     display: inline-block;
     margin-top: 1rem;
-}
-
-footer ul {
-    padding: 0;
 }
