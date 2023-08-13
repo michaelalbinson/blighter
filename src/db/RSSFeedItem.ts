@@ -3,6 +3,7 @@
 import FeedItem from "./types/FeedItem";
 import DBManager from "./DBManager";
 import DBObject from "./DBObject";
+import RSSFeed from "./RSSFeed";
 
 export default class RSSFeedItem extends DBObject {
     static tableName(): string {
@@ -15,6 +16,11 @@ export default class RSSFeedItem extends DBObject {
 
     static async getAll(): Promise<FeedItem[]> {
         return RSSFeedItem.rows2Objects(await this._getAll());
+    }
+
+    static async flipSaved(id: number): Promise<void> {
+        const item = await RSSFeedItem.getById(id);
+        await DBManager.run(`UPDATE feed_item SET saved = ? WHERE id = ?;`, [!item.saved, id]);
     }
 
     static async getActive(): Promise<FeedItem[]> {

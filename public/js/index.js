@@ -4,7 +4,12 @@ window.onload = async () => {
     const PAGE_SIZE = window.blighterClientSettings.get('pageSize');
 
     const urlParams = getUrlParams();
-    const url = window.location.href.includes('single-feed') ? `/feed?id=${urlParams.id}` : '/feed';
+    let url = '/feed';
+    if (window.location.href.includes('single-feed'))
+        url = `/feed?id=${urlParams.id}`;
+    else if (window.location.href.includes('/saved'))
+        url = '/feed?saved=true';
+
     const data = await fetch(url);
     if (!data.ok)
         throw new Error('Failed to load feed data');
@@ -15,7 +20,7 @@ window.onload = async () => {
     let currentListElement = null;
     const renderList = () => {
         currentListElement = generateList(currentListing.slice(currentStartIndex, currentStartIndex + PAGE_SIZE), currentListElement);
-    }
+    };
     renderList();
 
     const pageRight = button('>', () => {
@@ -83,12 +88,35 @@ window.onload = async () => {
             span.appendChild(a2);
             const span2 = document.createElement('span');
             span2.innerText = el.categories;
+            const span3 = document.createElement('span');
+            const saveButton = button(el.saved ? 'Unsave' : 'Save', async () => {
+                const res = await fetch('/save-item', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ itemId: el.id, saved: el.saved })
+                });
+
+                if (!res.ok) {
+                    console.error('Failed to save item');
+                    return;
+                }
+
+                saveButton.innerText = el.saved ? 'Save' : 'Unsave';
+                if (window.location.href.includes('/saved'))
+                    window.location.reload();
+            });
+            span3.appendChild(saveButton);
             const li = document.createElement('li');
             li.appendChild(link);
             li.appendChild(document.createElement('br'));
             li.appendChild(span);
             li.appendChild(document.createElement('br'));
             li.appendChild(span2);
+            li.appendChild(document.createElement('br'));
+            li.appendChild(span3);
             newList.appendChild(li);
         }
 
@@ -104,11 +132,6 @@ window.onload = async () => {
             result[item[0]] = decodeURIComponent(item[1]);
         });
         return result;
-    }
-
-    function saveForm() {
-        const form = document.createElement('form');
-        form.action = '/save';
     }
 
     function button(text, clickFn) {

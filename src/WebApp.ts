@@ -27,6 +27,10 @@ export default class WebApp {
             res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
         });
 
+        app.get('/saved', (req, res) => {
+            res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
+        });
+
         let fetchFeedLocked = false;
         app.post('/fetch-feeds', async (req, res) => {
             if (fetchFeedLocked) {
@@ -46,6 +50,20 @@ export default class WebApp {
             res.redirect('/');
         });
 
+        app.post('/save-item', async (req, res) => {
+            try {
+                console.log(req.body);
+                const itemId = (req.body as {itemId: number}).itemId;
+                if (!itemId)
+                    return res.status(400).send();
+
+                await RSSFeedItem.flipSaved(itemId);
+                res.status(200).send();
+            } catch (e) {
+                res.status(500).send();
+            }
+        });
+
         app.get('/load-demo-data', async (req, res) => {
             await InitialDataLoader.loadDefaultData();
             res.redirect('/');
@@ -60,6 +78,13 @@ export default class WebApp {
                     it.feed = feed;
                     return it;
                 });
+            } else if (req.query.saved) {
+                const feedMap = await RSSFeed.getIdMap();
+                items = (await RSSFeedItem.getSaved())
+                    .map(it => {
+                        it.feed = feedMap.get(it.feedID) || null
+                        return it;
+                    });
             } else {
                 const feedMap = await RSSFeed.getIdMap();
                 items = (await RSSFeedItem.getActive())
@@ -70,12 +95,15 @@ export default class WebApp {
                     });
             }
 
-
-
             res.send(items);
         });
 
         app.get('/feeds', async (req, res) => {
+            const feeds = await RSSFeed.getAll();
+            res.status(200).send(feeds);
+        });
+
+        app.get('/saved-feed', async (req, res) => {
             const feeds = await RSSFeed.getAll();
             res.status(200).send(feeds);
         });

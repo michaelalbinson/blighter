@@ -122,6 +122,20 @@ main button:hover {
     animation: ease-in-out 1s;
 }
 
+main li span button {
+    font-size: 0.75rem;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--theme-1);
+}
+
+main li span button:hover {
+    color: var(--theme-active);
+    background-color: var(--background-color);
+}
+
 
 div#leading-button-group {
     text-align: right;
