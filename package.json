@@ -8,7 +8,6 @@
     "run:build": "npm run build && npm run start",
     "rerun:fresh_db": "rm -f blighter.db && npm run run:build",
     "build": "tsc --build",
-    "build-test": "npm run build && node dist/test.js",
     "fix": "eslint './src/**/*.{js,ts}' --fix",
     "lint": "eslint './src/**/*.{js,ts}'",
     "prettier": "prettier --write src",

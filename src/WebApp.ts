@@ -9,6 +9,9 @@ import RSSFeedItem from "./db/RSSFeedItem";
 import {join} from 'path';
 import bodyParser from "body-parser";
 import RSSFeed from "./db/RSSFeed";
+import NoteFS from "./fs/NoteFS";
+import NoteDB from "./db/NoteDB";
+import FeedItem from "./db/types/FeedItem";
 
 export default class WebApp {
     static start() {
@@ -135,6 +138,19 @@ export default class WebApp {
             res.status(200).sendFile(join(process.cwd(), 'public/settings.html'));
         });
 
-        app.listen(process.env.PORT || 3000, () => Logger.log('Example app is listening on port 3000.'));
+        app.get('/test', async (req, res) => {
+            const feedItem = {
+                title: 'Testing things out together: the finale! With a super long article title. $$ Hello',
+                link: 'https://example.com'
+            } as FeedItem;
+
+            const note = await NoteFS.create(feedItem, 'this is test content');
+            await NoteDB.insert(note);
+            const all = await NoteDB.getAll();
+            console.log(all);
+        });
+
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => Logger.log(`Example app is listening on port ${PORT}.`));
     }
 }

@@ -4,6 +4,7 @@ import {Database, RunResult} from "sqlite3";
 import RSSFeedItem from "./RSSFeedItem";
 import RSSFeed from "./RSSFeed";
 import Logger from "../Logger";
+import NoteDB from "./NoteDB";
 
 class DBManager {
     private readonly db: Database;
@@ -13,9 +14,8 @@ class DBManager {
     }
 
     async setup(): Promise<void> {
-        if (process.env.BOOTSTRAP) {
+        if (process.env.BOOTSTRAP)
             await DBManager.bootstrap(this);
-        }
     }
 
     async fetch(sql: string, params: any[]|null): Promise<any[]> {
@@ -82,7 +82,8 @@ class DBManager {
         Logger.info('Bootstrapping tables');
         const promises = [
             RSSFeed.tableSQL(),
-            RSSFeedItem.tableSQL()
+            RSSFeedItem.tableSQL(),
+            NoteDB.tableSQL()
         ].map(async (sql) => {
             await db.run(sql, null);
         });
@@ -91,7 +92,7 @@ class DBManager {
     }
 
     private static dbTrace(sql: string) {
-        if (process.env.DB_TRACE)
+        if (process.env.DB_TRACE === 'true' || process.env.DB_TRACE === '1')
             Logger.info(`db.trace: ${sql.replace(/[\t\n ]+/g, ' ').trim()}`);
     }
 }
