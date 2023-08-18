@@ -16,6 +16,7 @@ export default class NoteFS {
         '10-oct', '11-nov', '12-dev'
     ];
     static NOTE_ROOT_PATH = join(__dirname, '..', '..', 'public', 'content', 'notes'); // consider overridable
+    static dirPathExists = new Map<string, boolean>; // global cache of if a directory exists or not - not written to much
 
     static async read(fileUrl: string): Promise<Note> {
         const notePath = NoteFS.getNoteUrl(fileUrl);
@@ -97,10 +98,33 @@ export default class NoteFS {
             createdOn.getFullYear().toString(),
             NoteFS.MONTH_2_DIR_MAP[createdOn.getMonth()]
         );
+
+        await this.createDirIfNeeded(dirPath);
+
         return join(
             dirPath,
             isNew ? await NoteFS.newFileName(dirPath, note) : note.url
         );
+    }
+
+    static async createDirIfNeeded(dirName: string) {
+        if (this.dirPathExists.get(dirName))
+            return;
+
+        if (await FileMan.exists(dirName)) {
+            this.dirPathExists.set(dirName, true);
+            return;
+        }
+
+        try {
+            await FileMan.mkdir(dirName);
+        } catch (e) {
+            // if we fail the first time, create the year directory first then retry the month
+            await FileMan.mkdir(join(dirName, '..'));
+            await FileMan.mkdir(dirName);
+        }
+
+        this.dirPathExists.set(dirName, true);
     }
 
     static async newFileName(dirPath: string, note: Note): Promise<string> {
