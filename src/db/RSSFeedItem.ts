@@ -22,6 +22,10 @@ export default class RSSFeedItem extends DBObject {
         await DBManager.run(`UPDATE feed_item SET saved = ? WHERE id = ?;`, [!item.saved, id]);
     }
 
+    static async setHasNote(id: number): Promise<void> {
+        await DBManager.run(`UPDATE feed_item SET has_note = true WHERE id = ?;`, [id]);
+    }
+
     static async getActive(): Promise<FeedItem[]> {
         return RSSFeedItem.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE feed_id IN (
@@ -82,7 +86,9 @@ export default class RSSFeedItem extends DBObject {
                 pub_date TEXT NOT NULL,
                 description TEXT NOT NULL,
                 categories TEXT,
-                saved BOOLEAN NOT NULL DEFAULT FALSE
+                saved BOOLEAN NOT NULL DEFAULT FALSE,
+                read BOOLEAN NOT NULL DEFAULT FALSE,
+                has_note BOOLEAN NOT NULL DEFAULT FALSE
             );
         `;
     }
@@ -106,7 +112,9 @@ export default class RSSFeedItem extends DBObject {
                 id: result.id,
                 feedID: result.feed_id,
                 content: result.content,
-                saved: result.saved
+                saved: result.saved,
+                read: result.read,
+                hasNote: result.has_note
             } as FeedItem;
         });
     }

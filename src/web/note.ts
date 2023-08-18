@@ -23,7 +23,15 @@ export default function setupNoteRoutes(app: Express) {
             throw new Error('yikes');
 
         return item;
-    }
+    };
+
+    const setHasNote = async (itemId: string): Promise<void> => {
+        if (itemId.includes('feed_item')) {
+            const feedItemId = Number(itemId.split('feed_item-')[1])
+            await RSSFeedItem.setHasNote(feedItemId);
+        } else
+            throw new Error('yikes');
+    };
 
     app.get('/note', async(req, res) => {
         const itemId = req.query['itemId'] as string;
@@ -53,6 +61,7 @@ export default function setupNoteRoutes(app: Express) {
         } else {
             const note = await NoteFS.create(item, noteContent);
             await NoteDB.insert(note);
+            await setHasNote(itemId);
         }
 
         res.redirect('back');

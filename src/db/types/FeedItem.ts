@@ -13,5 +13,7 @@ export default interface FeedItem {
     content: string|null,
     feedID: number,
     feed: Feed|null,
-    saved: boolean
+    saved: boolean,
+    read: boolean,
+    hasNote: boolean
 }
