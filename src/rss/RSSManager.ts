@@ -1,6 +1,5 @@
 'use strct';
 
-import fetch from 'node-fetch';
 import {XMLParser} from "fast-xml-parser";
 import Feed from "../db/types/Feed";
 import Logger from "../Logger";
@@ -51,7 +50,7 @@ export default class RSSManager {
         return url.includes('facebook') ? {} :
             {
                 headers: {
-                    // some sites seem pretty opinionated about node-fetch's default UA
+                    // some sites seem pretty opinionated about fetch's default UA
                     // from testing, Meta's doesn't like me spoofing firefox, but Medium doesn't
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0'
                 }

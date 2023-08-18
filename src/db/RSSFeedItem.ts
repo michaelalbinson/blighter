@@ -3,7 +3,6 @@
 import FeedItem from "./types/FeedItem";
 import DBManager from "./DBManager";
 import DBObject from "./DBObject";
-import RSSFeed from "./RSSFeed";
 
 export default class RSSFeedItem extends DBObject {
     static tableName(): string {

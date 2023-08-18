@@ -19,4 +19,5 @@ Simple RSS feed aggregator with a local SQLite cache
 - [ ] Grouping + tagging feeds by larger topics (e.g. engineering, general tech)
 - [ ] Hardening + resiliency (prevent errors from crashing the app)
 - [x] Pagination/reducing endless-scroll stress on main page
-- [ ] Save article
+- [x] Save article
+- [ ] Add notes for article
