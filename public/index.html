@@ -9,13 +9,14 @@
         <link rel="stylesheet" href="css/header.css" />
         <link rel="stylesheet" href="css/footer.css" />
         <script src="js/CachedSettings.js"></script>
+        <script src="js/ReloadableTableView.js"></script>
         <script src="js/utils.js"></script>
         <script src="js/index.js"></script>
     </head>
     <body>
         <header>
             <a href="/">
-                <img src="assets/favicon.ico" alt="Blighter logo" />
+                <img src="assets/logo.png" alt="Blighter logo" />
             </a>
             <ul role="menu">
                 <li role="menuitem"><a href="/add-feed.html">Add</a></li>
@@ -31,15 +32,7 @@
                     <button type="submit" title="Refresh feeds">⇲</button>
                 </form>
             </div>
-
-            <form id="search-form">
-                <label for="search-input" style="display: none">Search</label>
-                <input type="search" name="search" id="search-input" placeholder="🔎 Quick filter..." />
-            </form>
-
             <div id="list"></div>
-
-            <div id="trailing-button-group"></div>
         </main>
         <footer>
             <ul>
