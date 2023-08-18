@@ -110,8 +110,11 @@ window.onload = async () => {
                     window.location.reload();
             });
             span3.appendChild(saveButton);
+            const span4 = document.createElement('span');
+            span4.innerText = ' - ';
+            span3.appendChild(span4);
 
-            const noteButton = addLink(el.hasNote ? 'Edit Note' : 'Add Note', `/item-note?itemId=feed_item-${el.id}`);
+            const noteButton = addLink(el.hasNote ? 'View/Edit Note' : 'Add Note', `/item-note?itemId=feed_item-${el.id}`);
             span3.appendChild(noteButton);
             const li = document.createElement('li');
             li.appendChild(link);
