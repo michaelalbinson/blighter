@@ -3,7 +3,7 @@
     --theme-1: #ff7e00;
     --theme-active: #ee5e00;
     --text-color: white;
-    --background-color: #222;
+    --background-color: #222222;
 }
 
 body {
@@ -28,7 +28,7 @@ a:hover {
     text-decoration: underline;
 }
 
-main a:visited {
+main span:not(.links) a:visited {
     color: #80693c;
 }
 

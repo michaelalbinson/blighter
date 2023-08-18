@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Blighter</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/note.css" />
+    <script src="js/utils.js"></script>
+    <script src="js/note.js"></script>
+</head>
+<body>
+<header>
+    <a href="/">
+        <img src="assets/favicon.ico" alt="Blighter logo" />
+    </a>
+</header>
+<main>
+    <h2>Add a note</h2>
+    <form method="post" action="/note" method="post">
+        <input id="itemId" name="itemId" type="hidden" value="feed_id:sample" />
+        <label for="note" id="article-info">Notes</label>
+        <hr />
+        <br />
+        <textarea id="note" name="note"></textarea>
+        <br /><br />
+        <button type="submit">Submit</button>
+    </form>
+</main>
+<footer>
+    <ul>
+        <li><a href="/manage">Manage Feeds</a></li>
+        <li><a href="/add-feed.html">Add Feed</a></li>
+    </ul>
+</footer>
+</body>
+</html>

@@ -7,6 +7,7 @@ import ReadingListItem from "../db/types/ReadingListItem";
 import FeedItem from "../db/types/FeedItem";
 import {join} from "path";
 
+
 export default class NoteFS {
     static YAML_DELIMITER = '-----------------------\n';
     static MONTH_2_DIR_MAP = [
@@ -31,7 +32,7 @@ export default class NoteFS {
         return {
             content: body,
             url: fileUrl,
-            articleUrl: headerContent.articleUrl,
+            articleLink: headerContent.articleLink,
             articleTitle: headerContent.articleTitle,
             createdOn: headerContent.createdOn,
             updatedOn: headerContent.updatedOn,
@@ -46,8 +47,8 @@ export default class NoteFS {
                 const key = allSections[0];
                 const value = allSections.slice(1).join(':').trim();
                 switch (key) {
-                    case "articleUrl":
-                        headerContent.articleUrl = value; break;
+                    case "articleLink":
+                        headerContent.articleLink = value; break;
                     case "articleTitle":
                         headerContent.articleTitle = value; break;
                     case "createdOn":
@@ -71,7 +72,7 @@ export default class NoteFS {
             createdOn: now,
             updatedOn: now,
             articleTitle: item.title,
-            articleUrl: item.link
+            articleLink: item.link
         } as Note;
 
         const noteUrl = await NoteFS.getFilePath(note, true);
@@ -133,17 +134,20 @@ export default class NoteFS {
         if (dirCount < 10)
             dirCountStr = `0${dirCountStr}`;
 
-        return `${dirCountStr}-${note.articleTitle.replace(/[ \n\t:;|?!./\\\[\](){}<>,_+=@#$%^&*"']+/g, '-').slice(0, 40)}.md`;
+        return `${dirCountStr}-${this.escapeNonWordCharacters(note.articleTitle).slice(0, 40)}.md`;
+    }
+
+    static escapeNonWordCharacters(str: string) {
+        return str.replace(/[\W_]+/g, '-');
     }
 
     static toContent(note: Note): string {
-        console.log(this.headerContent(note));
         return this.headerContent(note) + '\n' + note.content;
     }
 
     static headerContent(from: Note): string {
         return NoteFS.YAML_DELIMITER +
-            `articleUrl: ${from.articleUrl}\n` +
+            `articleLink: ${from.articleLink}\n` +
             `articleTitle: ${from.articleTitle}\n` +
             `createdOn: ${from.createdOn}\n` +
             `updatedOn: ${from.updatedOn}\n` +

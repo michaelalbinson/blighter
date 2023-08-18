@@ -89,6 +89,7 @@ window.onload = async () => {
             const span2 = document.createElement('span');
             span2.innerText = el.categories;
             const span3 = document.createElement('span');
+            span3.classList.add('links');
             const saveButton = button(el.saved ? 'Unsave' : 'Save', async () => {
                 const res = await fetch('/save-item', {
                     method: 'POST',
@@ -109,6 +110,9 @@ window.onload = async () => {
                     window.location.reload();
             });
             span3.appendChild(saveButton);
+
+            const noteButton = addLink(el.hasNote ? 'Edit Note' : 'Add Note', `/item-note?itemId=feed_item-${el.id}`);
+            span3.appendChild(noteButton);
             const li = document.createElement('li');
             li.appendChild(link);
             li.appendChild(document.createElement('br'));
@@ -122,22 +126,5 @@ window.onload = async () => {
 
         listRoot.appendChild(newList);
         return newList;
-    }
-
-    function getUrlParams() {
-        const url = location.search.slice(1);
-        const result = {};
-        url.split("&").forEach((part) => {
-            const item = part.split("=");
-            result[item[0]] = decodeURIComponent(item[1]);
-        });
-        return result;
-    }
-
-    function button(text, clickFn) {
-        const button = document.createElement('button');
-        button.innerText = text;
-        button.addEventListener('click', clickFn);
-        return button;
     }
 }

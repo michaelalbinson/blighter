@@ -1,7 +1,7 @@
 'use strict';
 
 export default interface FileHeaderContent {
-    articleUrl: string,
+    articleLink: string,
     articleTitle: string,
     createdOn: string,
     updatedOn: string,
