@@ -5,6 +5,7 @@ import RSSFeed from "../db/RSSFeed";
 import RSSFeedItem from "../db/RSSFeedItem";
 import RSSManager from "../rss/RSSManager";
 import {join} from "path";
+import ReadingListItemDB from "../db/ReadingListItemDB";
 
 export default function setupFeedRoutes(app: Express) {
     app.get('/feeds', async (req, res) => {
@@ -85,5 +86,14 @@ export default function setupFeedRoutes(app: Express) {
 
     app.get('/saved', (req, res) => {
         res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
+    });
+
+    app.get('/reading-list', async (req, res) => {
+        res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
+    });
+
+    app.get('/reading-list-feed', async (req, res) => {
+        const items = await ReadingListItemDB.getAll();
+        res.status(200).send(items);
     });
 }

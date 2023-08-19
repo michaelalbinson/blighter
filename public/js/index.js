@@ -24,10 +24,15 @@ window.onload = async () => {
         link.target = '_blank';
         link.innerText = item.title;
         const span = document.createElement('span');
-        span.innerText = new Date(item.pubDate).toString() + " - ";
+        span.innerText = new Date(item.pubDate || item.addedOn).toString() + " - ";
         const a2 = document.createElement('a');
-        a2.innerText = item.feed.name;
-        a2.href = `/single-feed?id=${item.feed.id}`;
+        if (item.feed) {
+            a2.innerText = item.feed.name;
+            a2.href = `/single-feed?id=${item.feed.id}`;
+        } else {
+            a2.innerText = item.domain;
+            a2.href = item.link;
+        }
         span.appendChild(a2);
         const span2 = document.createElement('span');
         span2.innerText = item.categories;

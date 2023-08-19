@@ -5,5 +5,7 @@ export default interface ReadingListItem {
     title: string,
     link: string,
     read: boolean,
-    saved: boolean
+    saved: boolean,
+    addedOn: string,
+    domain: string
 }

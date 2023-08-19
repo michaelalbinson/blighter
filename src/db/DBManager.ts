@@ -5,6 +5,7 @@ import RSSFeedItem from "./RSSFeedItem";
 import RSSFeed from "./RSSFeed";
 import Logger from "../Logger";
 import NoteDB from "./NoteDB";
+import ReadingListItemDB from "./ReadingListItemDB";
 
 class DBManager {
     private readonly db: Database;
@@ -83,7 +84,8 @@ class DBManager {
         const promises = [
             RSSFeed.tableSQL(),
             RSSFeedItem.tableSQL(),
-            NoteDB.tableSQL()
+            NoteDB.tableSQL(),
+            ReadingListItemDB.tableSQL()
         ].map(async (sql) => {
             await db.run(sql, null);
         });
