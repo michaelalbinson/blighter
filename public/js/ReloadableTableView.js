@@ -28,14 +28,15 @@ class ReloadableListView {
             this.listTarget.removeChild(this._currentListElement);
 
         let newList = document.createElement('ul');
-        if (this._filteredItemList.length !== 0) {
+        if (this._filteredItemList.length > 0 && this._filteredItemList[0].id) {
             const elsToRender = this._filteredItemList.slice(this._currentStartIndex, this._currentStartIndex + this._pageSize);
             for (let el of elsToRender) {
                 const li = this._getListCellFn(el);
                 newList.appendChild(li);
             }
         } else {
-            newList = document.createElement('span');
+            newList = document.createElement('div');
+            newList.id = 'no-results';
             newList.innerText = 'No matches found';
         }
 
