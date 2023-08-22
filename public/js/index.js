@@ -18,6 +18,13 @@ window.onload = async () => {
         return await data.json();
     }
 
+    const getNoteURL = (item) => {
+        if (item.feed)
+            return `/item-note?itemId=feed_item-${item.id}`;
+        else
+            return `/item-note?itemId=reading_list_item-${item.id}`;
+    }
+
     const buildListItem = (item) => {
         const link = document.createElement('a');
         link.href = item.link;
@@ -62,7 +69,7 @@ window.onload = async () => {
         span4.innerText = ' - ';
         span3.appendChild(span4);
 
-        const noteButton = addLink(item.hasNote ? 'View/Edit Note' : 'Add Note', `/item-note?itemId=feed_item-${item.id}`);
+        const noteButton = addLink(item.hasNote ? 'View/Edit Note' : 'Add Note', getNoteURL(item));
         span3.appendChild(noteButton);
         const li = document.createElement('li');
         li.appendChild(link);
@@ -76,7 +83,7 @@ window.onload = async () => {
     };
 
     const filterFn = (item, searchTerm) => {
-        return (item.title + ' ' + item.categories + ' ' + item.feed.name).toLowerCase().includes(searchTerm.toLowerCase());
+        return (item.title + ' ' + item.categories + ' ' + (item?.feed?.name || item.domain)).toLowerCase().includes(searchTerm.toLowerCase());
     }
 
     const PAGE_SIZE = window.blighterClientSettings.get('pageSize');

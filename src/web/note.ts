@@ -8,6 +8,7 @@ import NoteDB from "../db/NoteDB";
 import ReadingListItem from "../db/types/ReadingListItem";
 import FeedItem from "../db/types/FeedItem";
 import it from "node:test";
+import ReadingListItemDB from "../db/ReadingListItemDB";
 
 export default function setupNoteRoutes(app: Express) {
     app.get('/item-note', (req, res) => {
@@ -16,9 +17,13 @@ export default function setupNoteRoutes(app: Express) {
 
     const resolveItem = async (itemId: string): Promise<FeedItem | ReadingListItem> => {
         let item: FeedItem|ReadingListItem;
+        console.log(itemId);
         if (itemId.includes('feed_item')) {
             const feedItemId = Number(itemId.split('feed_item-')[1])
             item = await RSSFeedItem.getById(feedItemId);
+        } else if (itemId.includes('reading_list_item')) {
+            const feedItemId = Number(itemId.split('reading_list_item-')[1])
+            item = await ReadingListItemDB.getById(feedItemId);
         } else
             throw new Error('yikes');
 
@@ -29,6 +34,9 @@ export default function setupNoteRoutes(app: Express) {
         if (itemId.includes('feed_item')) {
             const feedItemId = Number(itemId.split('feed_item-')[1])
             await RSSFeedItem.setHasNote(feedItemId);
+        } else if (itemId.includes('reading_list_item')) {
+            const feedItemId = Number(itemId.split('reading_list_item-')[1])
+            await ReadingListItemDB.setHasNote(feedItemId);
         } else
             throw new Error('yikes');
     };

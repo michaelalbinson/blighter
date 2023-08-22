@@ -32,6 +32,19 @@ export default function setupFeedItemRoutes(app: Express) {
         }
     });
 
+    app.get('/reading-list-item', async (req, res) => {
+        try {
+            const itemId = Number(req.query['itemID'])
+            if (!itemId || isNaN(itemId))
+                return res.status(400).send();
+
+            const feedItem = await ReadingListItemDB.getById(Number(itemId));
+            res.status(200).send(feedItem);
+        } catch (e) {
+            res.status(500).send();
+        }
+    })
+
     app.post('/reading-list-item', async (req, res) => {
         const {url} = (req.body as {url: string})
         const domain = ReadingListItemDB.getDomain(url);

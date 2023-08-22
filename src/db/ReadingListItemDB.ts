@@ -20,8 +20,13 @@ export default class ReadingListItemDB extends DBObject {
         )[0];
     }
 
+    static async setHasNote(id: number): Promise<void> {
+        await DBManager.run(`UPDATE ${this.tableName()} SET has_note = true WHERE id = ?;`, [id]);
+    }
+
     static async getAll(): Promise<ReadingListItem[]> {
-        return this.rows2Objects(await this._getAll());
+        return this.rows2Objects(await this._getAll())
+            .sort((a, b) => new Date(b.addedOn).getTime() - new Date(a.addedOn).getTime())
     }
 
     static async insert(item: ReadingListItem) {
@@ -92,7 +97,8 @@ export default class ReadingListItemDB extends DBObject {
                 read: result.read,
                 saved: result.saved,
                 addedOn: result.added_on,
-                domain: result.domain
+                domain: result.domain,
+                hasNote: result.has_note
             } as ReadingListItem;
         });
     }
@@ -106,7 +112,8 @@ export default class ReadingListItemDB extends DBObject {
                 read BOOLEAN NOT NULL DEFAULT FALSE,
                 saved BOOLEAN NOT NULL DEFAULT FALSE,
                 added_on TEXT NOT NULL,
-                domain TEXT NOT NULL
+                domain TEXT NOT NULL,
+                has_note BOOLEAN NOT NULL DEFAULT FALSE
             );
         `;
     }
