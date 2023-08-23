@@ -17,7 +17,6 @@ export default function setupNoteRoutes(app: Express) {
 
     const resolveItem = async (itemId: string): Promise<FeedItem | ReadingListItem> => {
         let item: FeedItem|ReadingListItem;
-        console.log(itemId);
         if (itemId.includes('feed_item')) {
             const feedItemId = Number(itemId.split('feed_item-')[1])
             item = await RSSFeedItem.getById(feedItemId);

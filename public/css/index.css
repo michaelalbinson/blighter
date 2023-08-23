@@ -19,16 +19,20 @@ h1, h2, h3, section.splash p, header li, footer li {
     color: var(--theme-1);
 }
 
-a {
+a, main span.links a:visited {
     text-decoration: none;
     color: var(--theme-1);
+}
+
+span.links button {
+    font-weight: normal;
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-main span:not(.links) a:visited {
+main a:visited {
     color: #80693c;
 }
 

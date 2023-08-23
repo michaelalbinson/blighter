@@ -6,6 +6,7 @@ import RSSFeedItem from "../db/RSSFeedItem";
 import RSSManager from "../rss/RSSManager";
 import {join} from "path";
 import ReadingListItemDB from "../db/ReadingListItemDB";
+import FeedCollector from "../db/FeedCollector";
 
 export default function setupFeedRoutes(app: Express) {
     app.get('/feeds', async (req, res) => {
@@ -29,15 +30,8 @@ export default function setupFeedRoutes(app: Express) {
                     it.feed = feedMap.get(it.feedID) || null
                     return it;
                 });
-        } else {
-            const feedMap = await RSSFeed.getIdMap();
-            items = (await RSSFeedItem.getActive())
-                .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
-                .map(it => {
-                    it.feed = feedMap.get(it.feedID) || null
-                    return it;
-                });
-        }
+        } else
+            items = await FeedCollector.getActive();
 
         res.send(items);
     });
@@ -65,6 +59,11 @@ export default function setupFeedRoutes(app: Express) {
         const newFeed = (req.body as {rss_feed: string}).rss_feed
         await RSSManager.discoverAndInsert(newFeed);
         res.redirect('/');
+    });
+
+    app.get('/rss-feed', async (req, res) => {
+        const feeds = await RSSFeed.getAll();
+        res.status(200).send(feeds);
     });
 
     let fetchFeedLocked = false;

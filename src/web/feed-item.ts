@@ -46,9 +46,12 @@ export default function setupFeedItemRoutes(app: Express) {
     })
 
     app.post('/reading-list-item', async (req, res) => {
-        const {url} = (req.body as {url: string})
+        let {url, title} = (req.body as {url: string, title?: string})
         const domain = ReadingListItemDB.getDomain(url);
-        const title = await ReadingListItemDB.getArticleTitle(url);
+
+        if (!title)
+            title = await ReadingListItemDB.getArticleTitle(url);
+
         const rlItem = {
             link: url,
             title,
