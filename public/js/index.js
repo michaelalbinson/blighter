@@ -9,7 +9,7 @@ window.onload = async () => {
         else if (window.location.href.includes('/saved'))
             url = '/feed?saved=true';
         else if (window.location.href.includes('/reading-list'))
-            url = '/reading-list-feed'
+            url = '/reading-list-feed';
 
         const data = await fetch(url);
         if (!data.ok)

@@ -65,11 +65,12 @@ export default class ReadingListItemDB extends DBObject {
         if (title) {
             return title[0]
                 .replace(/<title[ a-zA-Z="-]*>/i, '')
-                .replace('</title>', '');
+                .replace('</title>', '')
+                .trim();
         } else {
             // only load the full dom if we really need to
             const dom = cheerio.load(text);
-            return dom('title').text();
+            return dom('title').text().trim();
         }
     }
 
