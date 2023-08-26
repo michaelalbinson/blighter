@@ -30,7 +30,7 @@ window.onload = async () => {
     }
 
     const getNoteURL = (item) => {
-        return `/item-note?itemId=feed_item-${fullItemId(item)}`;
+        return `/item-note?itemId=${fullItemId(item)}`;
     }
 
     const buildListItem = (item) => {
@@ -69,6 +69,7 @@ window.onload = async () => {
             }
 
             saveButton.innerText = item.saved ? 'Save' : 'Unsave';
+            item.saved = !item.saved;
             if (window.location.href.includes('/saved'))
                 window.location.reload();
         });
