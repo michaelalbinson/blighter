@@ -64,7 +64,7 @@ export default class NoteDB extends DBObject {
 
     static rows2Objects(rows: any[]): Note[] {
         let rs = rows;
-        if (!rs)
+        if (!rs || rs.length === 0)
             return [];
 
         if (!rs.length)

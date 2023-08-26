@@ -10,19 +10,27 @@ window.onload = async () => {
             url = '/feed?saved=true';
         else if (window.location.href.includes('/reading-list'))
             url = '/reading-list-feed';
+        else if (window.location.href.includes('/annotated'))
+            url = '/feed?annotated=true';
 
         const data = await fetch(url);
         if (!data.ok)
             throw new Error('Failed to load feed data');
 
-        return await data.json();
+        const allItems = await data.json();
+        window.__allItems = allItems;
+        return allItems;
+    }
+
+    const fullItemId = (item) => {
+        if (item.feed)
+            return `feed_item-${item.id}`;
+        else
+            return `reading_list_item-${item.id}`;
     }
 
     const getNoteURL = (item) => {
-        if (item.feed)
-            return `/item-note?itemId=feed_item-${item.id}`;
-        else
-            return `/item-note?itemId=reading_list_item-${item.id}`;
+        return `/item-note?itemId=feed_item-${fullItemId(item)}`;
     }
 
     const buildListItem = (item) => {
@@ -31,7 +39,7 @@ window.onload = async () => {
         link.target = '_blank';
         link.innerText = item.title;
         const span = document.createElement('span');
-        span.innerText = new Date(item.pubDate || item.addedOn).toString() + " - ";
+        span.innerText = new Date(item.pubDate).toString() + " - ";
         const a2 = document.createElement('a');
         if (item.feed) {
             a2.innerText = item.feed.name;
@@ -52,7 +60,7 @@ window.onload = async () => {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ itemId: item.id, saved: item.saved })
+                body: JSON.stringify({ itemId: fullItemId(item), saved: item.saved })
             });
 
             if (!res.ok) {

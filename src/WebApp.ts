@@ -6,7 +6,7 @@ import InitialDataLoader from "./db/InitialDataLoader";
 import Logger from "./Logger";
 import {join} from 'path';
 import bodyParser from "body-parser";
-import RSSFeed from "./db/RSSFeed";
+import RSSFeed from "./db/rss/RSSFeed";
 import setupRoutes from "./web";
 
 export default class WebApp {

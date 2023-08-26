@@ -1,6 +1,6 @@
 import {readFileSync} from "fs";
 import {join} from "path";
-import RSSManager from "../rss/RSSManager";
+import RSSManager from "./rss/RSSManager";
 import Logger from "../Logger";
 
 export default class InitialDataLoader {

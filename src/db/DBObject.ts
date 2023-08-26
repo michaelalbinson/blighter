@@ -16,5 +16,4 @@ export default class DBObject {
         const sql = `SELECT * FROM ${this.tableName()}`;
         return await DBManager.query(sql, []);
     }
-
 }

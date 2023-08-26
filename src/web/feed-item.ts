@@ -1,18 +1,24 @@
 'use strict';
 
 import {Express} from "express";
-import RSSFeedItem from "../db/RSSFeedItem";
-import ReadingListItemDB from "../db/ReadingListItemDB";
-import ReadingListItem from "../db/types/ReadingListItem";
+import RSSFeedItem from "../db/rss/RSSFeedItem";
+import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
+import ReadingListItem from "../db/reading_list/types/ReadingListItem";
+import WebUtils from "./WebUtils";
 
 export default function setupFeedItemRoutes(app: Express) {
     app.post('/save-item', async (req, res) => {
         try {
-            const itemId = (req.body as {itemId: number}).itemId;
+            const itemId = (req.body as {itemId: string}).itemId;
+            const item = await WebUtils.resolveItem(itemId);
             if (!itemId)
                 return res.status(400).send();
 
-            await RSSFeedItem.flipSaved(itemId);
+            if ('feed' in item)
+                await RSSFeedItem.flipSaved(item.id);
+            else
+                await ReadingListItemDB.flipSaved(item.id);
+
             res.status(200).send();
         } catch (e) {
             res.status(500).send();
@@ -55,7 +61,7 @@ export default function setupFeedItemRoutes(app: Express) {
         const rlItem = {
             link: url,
             title,
-            addedOn: new Date().toISOString(),
+            pubDate: new Date().toISOString(),
             domain
         } as ReadingListItem;
 

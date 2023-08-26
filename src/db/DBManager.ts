@@ -1,11 +1,11 @@
 'use strict';
 
 import {Database, RunResult} from "sqlite3";
-import RSSFeedItem from "./RSSFeedItem";
-import RSSFeed from "./RSSFeed";
+import RSSFeedItem from "./rss/RSSFeedItem";
+import RSSFeed from "./rss/RSSFeed";
 import Logger from "../Logger";
 import NoteDB from "./NoteDB";
-import ReadingListItemDB from "./ReadingListItemDB";
+import ReadingListItemDB from "./reading_list/ReadingListItemDB";
 
 class DBManager {
     private readonly db: Database;

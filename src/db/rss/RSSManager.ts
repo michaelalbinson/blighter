@@ -1,11 +1,11 @@
 'use strct';
 
 import {XMLParser} from "fast-xml-parser";
-import Feed from "../db/types/Feed";
-import Logger from "../Logger";
-import RSSFeed from "../db/RSSFeed";
-import FeedItem from "../db/types/FeedItem";
-import RSSFeedItem from "../db/RSSFeedItem";
+import Feed from "./types/Feed";
+import Logger from "../../Logger";
+import RSSFeed from "./RSSFeed";
+import FeedItem from "./types/FeedItem";
+import RSSFeedItem from "./RSSFeedItem";
 
 export default class RSSManager {
     static async discoverFromURL(url: string): Promise<Feed> {

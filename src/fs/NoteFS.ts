@@ -3,8 +3,8 @@
 import Note from "./types/Note";
 import FileMan from "./util/FileMan";
 import FileHeaderContent from "./types/FileHeaderContent";
-import ReadingListItem from "../db/types/ReadingListItem";
-import FeedItem from "../db/types/FeedItem";
+import ReadingListItem from "../db/reading_list/types/ReadingListItem";
+import FeedItem from "../db/rss/types/FeedItem";
 import {join} from "path";
 
 

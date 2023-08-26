@@ -1,8 +1,8 @@
 'use strict';
 
 import Feed from "./types/Feed";
-import DBManager from "./DBManager";
-import DBObject from "./DBObject";
+import DBManager from "../DBManager";
+import DBObject from "../DBObject";
 
 export default class RSSFeed extends DBObject {
     static tableName(): string {
@@ -74,7 +74,7 @@ export default class RSSFeed extends DBObject {
 
     static rows2Objects(rows: any[]): Feed[] {
         let rs = rows;
-        if (!rs)
+        if (!rs || rs.length === 0)
             return [];
 
         if (!rs.length)

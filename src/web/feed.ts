@@ -1,12 +1,12 @@
 'use strict';
 
 import {Express} from "express";
-import RSSFeed from "../db/RSSFeed";
-import RSSFeedItem from "../db/RSSFeedItem";
-import RSSManager from "../rss/RSSManager";
+import RSSFeed from "../db/rss/RSSFeed";
+import RSSManager from "../db/rss/RSSManager";
 import {join} from "path";
-import ReadingListItemDB from "../db/ReadingListItemDB";
-import FeedCollector from "../db/FeedCollector";
+import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
+import DataSourceCollector from "../data-sources/DataSourceCollector";
+import feedItemDS from "../data-sources/FeedItemDS";
 
 export default function setupFeedRoutes(app: Express) {
     app.get('/feeds', async (req, res) => {
@@ -16,24 +16,16 @@ export default function setupFeedRoutes(app: Express) {
 
     app.get('/feed', async (req, res) => {
         let items;
-        if (req.query.id) {
-            const feed = await RSSFeed.getById(Number(req.query.id));
-            items = await RSSFeedItem.getSingleFeed(Number(req.query.id));
-            items.map(it => {
-                it.feed = feed;
-                return it;
-            });
-        } else if (req.query.saved) {
-            const feedMap = await RSSFeed.getIdMap();
-            items = (await RSSFeedItem.getSaved())
-                .map(it => {
-                    it.feed = feedMap.get(it.feedID) || null
-                    return it;
-                });
-        } else
-            items = await FeedCollector.getActive();
+        if (req.query.id) // TODO expand to allow single-domain selection
+            items = await feedItemDS.singleFeed(Number(req.query.id));
+        else if (req.query.saved)
+            items = await DataSourceCollector.getSaved();
+        else if (req.query.annotated)
+            items = await DataSourceCollector.getAnnotated();
+        else
+            items = await DataSourceCollector.getActive();
 
-        res.send(items);
+        res.status(200).send(items);
     });
 
     app.post('/update-feeds', async (req, res) => {
@@ -88,6 +80,10 @@ export default function setupFeedRoutes(app: Express) {
     });
 
     app.get('/reading-list', async (req, res) => {
+        res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
+    });
+
+    app.get('/annotated', async (req, res) => {
         res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
     });
 

@@ -1,8 +1,8 @@
 'use strict';
 
 import ReadingListItem from "./types/ReadingListItem";
-import DBObject from "./DBObject";
-import DBManager from "./DBManager";
+import DBObject from "../DBObject";
+import DBManager from "../DBManager";
 import * as cheerio from 'cheerio';
 
 export default class ReadingListItemDB extends DBObject {
@@ -12,6 +12,18 @@ export default class ReadingListItemDB extends DBObject {
 
     static async getById(id: number): Promise<ReadingListItem> {
         return this.rows2Objects([await this._getById(id)])[0];
+    }
+
+    static async getSaved(): Promise<ReadingListItem[]> {
+        return this.rows2Objects(
+            await DBManager.query(`SELECT * FROM ${this.tableName()} WHERE saved = true;`)
+        );
+    }
+
+    static async getAnnotated(): Promise<ReadingListItem[]> {
+        return this.rows2Objects(
+            await DBManager.query(`SELECT * FROM ${this.tableName()} WHERE has_note = true;`)
+        );
     }
 
     static async getByUrl(link: string): Promise<ReadingListItem> {
@@ -24,9 +36,13 @@ export default class ReadingListItemDB extends DBObject {
         await DBManager.run(`UPDATE ${this.tableName()} SET has_note = true WHERE id = ?;`, [id]);
     }
 
+    static async flipSaved(id: number): Promise<void> {
+        const item = await ReadingListItemDB.getById(id);
+        await DBManager.run(`UPDATE ${this.tableName()} SET saved = ? WHERE id = ?;`, [!item.saved, id])
+    }
+
     static async getAll(): Promise<ReadingListItem[]> {
-        return this.rows2Objects(await this._getAll())
-            .sort((a, b) => new Date(b.addedOn).getTime() - new Date(a.addedOn).getTime())
+        return this.rows2Objects(await this._getAll());
     }
 
     static async insert(item: ReadingListItem) {
@@ -42,7 +58,7 @@ export default class ReadingListItemDB extends DBObject {
         const params = [
             item.title,
             item.link,
-            item.addedOn,
+            item.pubDate,
             item.domain
         ];
 
@@ -84,7 +100,7 @@ export default class ReadingListItemDB extends DBObject {
 
     static rows2Objects(rows: any[]): ReadingListItem[] {
         let rs = rows;
-        if (!rs)
+        if (!rs || rs.length === 0)
             return [];
 
         if (!rs.length)
@@ -97,7 +113,7 @@ export default class ReadingListItemDB extends DBObject {
                 link: result.link,
                 read: result.read,
                 saved: result.saved,
-                addedOn: result.added_on,
+                pubDate: result.added_on, // this a quirk of compatability with DataSourceType.ts and having one sortable field
                 domain: result.domain,
                 hasNote: result.has_note
             } as ReadingListItem;

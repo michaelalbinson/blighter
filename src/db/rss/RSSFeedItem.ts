@@ -1,8 +1,8 @@
 'use strict';
 
 import FeedItem from "./types/FeedItem";
-import DBManager from "./DBManager";
-import DBObject from "./DBObject";
+import DBManager from "../DBManager";
+import DBObject from "../DBObject";
 
 export default class RSSFeedItem extends DBObject {
     static tableName(): string {
@@ -43,6 +43,12 @@ export default class RSSFeedItem extends DBObject {
     static async getSaved(): Promise<FeedItem[]> {
         return RSSFeedItem.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE saved = true;`)
+        );
+    }
+
+    static async getAnnotated(): Promise<FeedItem[]> {
+        return RSSFeedItem.rows2Objects(
+            await DBManager.query(`SELECT * FROM feed_item WHERE has_note = true;`)
         );
     }
 
@@ -95,7 +101,7 @@ export default class RSSFeedItem extends DBObject {
 
     static rows2Objects(rows: any[]): FeedItem[] {
         let rs = rows;
-        if (!rs)
+        if (!rs || rs.length === 0)
             return [];
 
         if (!rs.length)

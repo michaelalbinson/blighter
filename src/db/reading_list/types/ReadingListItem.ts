@@ -6,7 +6,7 @@ export default interface ReadingListItem {
     link: string,
     read: boolean,
     saved: boolean,
-    addedOn: string,
+    pubDate: string,
     domain: string,
     hasNote: boolean
 }
