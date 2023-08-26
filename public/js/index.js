@@ -8,6 +8,8 @@ window.onload = async () => {
             url = `/feed?id=${urlParams.id}`;
         else if (window.location.href.includes('/saved'))
             url = '/feed?saved=true';
+        else if (window.location.href.includes('/unread'))
+            url = '/feed?unread=true';
         else if (window.location.href.includes('/reading-list'))
             url = '/reading-list-feed';
         else if (window.location.href.includes('/annotated'))
@@ -52,13 +54,13 @@ window.onload = async () => {
         const span2 = getSpan('');
         span2.classList.add('links');
         const saveButton = button(item.saved ? 'Unsave' : 'Save', async () => {
-            const res = await fetch('/save-item', {
+            const res = await fetch('/item/save', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ itemId: fullItemId(item), saved: item.saved })
+                body: JSON.stringify({ itemId: fullItemId(item), saved: !item.saved })
             });
 
             if (!res.ok) {
@@ -66,33 +68,46 @@ window.onload = async () => {
                 return;
             }
 
-            saveButton.innerText = item.saved ? 'Save' : 'Unsave';
             item.saved = !item.saved;
+            saveButton.innerText = item.saved ? 'Unsave' : 'Save';
             if (window.location.href.includes('/saved'))
                 window.location.reload();
         });
         span2.appendChild(saveButton);
         span2.appendChild(getSpan(' - '));
-        const readButton = button(item.saved ? 'Mark read' : 'Mark unread', async () => {
+
+        const readButton = document.createElement('button');
+        readButton.innerText = item.read ? 'Mark unread' : 'Mark read';
+        const markRead = async (item, isRead) => {
             const res = await fetch('/item/mark-read', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ itemId: fullItemId(item), saved: item.saved })
+                body: JSON.stringify({ itemId: fullItemId(item), read: isRead })
             });
 
             if (!res.ok) {
-                console.error('Failed to save item');
+                console.error('Failed to mark item read');
                 return;
             }
 
-            readButton.innerText = item.saved ? 'Mark unread' : 'Mark read';
-            item.saved = !item.saved;
+            item.read = isRead;
+            readButton.innerText = isRead ? 'Mark unread' : 'Mark read';
             if (window.location.href.includes('/unread'))
                 window.location.reload();
+        };
+
+        readButton.addEventListener('click', () => {
+            markRead(item, !item.read);
         });
+
+        link.addEventListener('click', async () => {
+            await markRead(item, true);
+        });
+
+
         span2.appendChild(readButton);
         span2.appendChild(getSpan(' - '));
 

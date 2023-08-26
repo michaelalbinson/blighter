@@ -20,6 +20,8 @@ export default function setupFeedRoutes(app: Express) {
             items = await feedItemDS.singleFeed(Number(req.query.id));
         else if (req.query.saved)
             items = await DataSourceCollector.getSaved();
+        else if (req.query.unread)
+            items = await DataSourceCollector.getUnread();
         else if (req.query.annotated)
             items = await DataSourceCollector.getAnnotated();
         else
@@ -76,6 +78,10 @@ export default function setupFeedRoutes(app: Express) {
     });
 
     app.get('/saved', (req, res) => {
+        res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
+    });
+
+    app.get('/unread', (req, res) => {
         res.status(200).sendFile(join(process.cwd(), 'public/index.html'));
     });
 

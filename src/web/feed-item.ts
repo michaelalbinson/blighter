@@ -9,17 +9,33 @@ import Logger from "../Logger";
 import {join} from "path";
 
 export default function setupFeedItemRoutes(app: Express) {
-    app.post('/save-item', async (req, res) => {
+    app.post('/item/save', async (req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
-            const itemId = (req.body as {itemId: string}).itemId;
+            const {itemId, saved} = (req.body as {itemId: string, saved: boolean});
             if (!itemId)
                 return res.status(400).send();
 
             const item = await WebUtils.resolveItem(itemId);
             if ('feedID' in item)
-                await RSSFeedItem.flipSaved(item.id);
+                await RSSFeedItem.flipSaved(item.id, Boolean(saved));
             else
-                await ReadingListItemDB.flipSaved(item.id);
+                await ReadingListItemDB.flipSaved(item.id, Boolean(saved));
+
+            res.status(200).send();
+        });
+    });
+
+    app.post('/item/mark-read', async (req, res) => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
+            const {itemId, read} = (req.body as {itemId: string, read: boolean});
+            if (!itemId)
+                return res.status(400).send();
+
+            const item = await WebUtils.resolveItem(itemId);
+            if ('feedID' in item)
+                await RSSFeedItem.flipRead(item.id, Boolean(read));
+            else
+                await ReadingListItemDB.flipRead(item.id, Boolean(read));
 
             res.status(200).send();
         });

@@ -22,7 +22,7 @@ class ReadingListItemDS implements DataSource<ReadingListItem> {
     }
 
     async getUnread(): Promise<ReadingListItem[]> {
-        return []; // TODO: implement
+        return await ReadingListItemDB.getUnread();
     }
 }
 

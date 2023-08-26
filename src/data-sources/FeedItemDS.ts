@@ -32,7 +32,7 @@ class FeedItemDS implements DataSource<FeedItem> {
 
     async getUnread(): Promise<FeedItem[]> {
         return await this._withMappedFeeds(
-            [] // TODO: implement
+            await RSSFeedItem.getUnread()
         );
     }
 
@@ -42,7 +42,7 @@ class FeedItemDS implements DataSource<FeedItem> {
         return items.map(it => {
             it.feed = feed;
             return it;
-        });
+        }).sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
     }
 
     private async _withMappedFeeds(items: FeedItem[]): Promise<FeedItem[]> {

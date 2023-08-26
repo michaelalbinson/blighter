@@ -20,6 +20,12 @@ export default class ReadingListItemDB extends DBObject {
         );
     }
 
+    static async getUnread(): Promise<ReadingListItem[]> {
+        return this.rows2Objects(
+            await DBManager.query(`SELECT * FROM ${this.tableName()} WHERE read = false;`)
+        );
+    }
+
     static async getAnnotated(): Promise<ReadingListItem[]> {
         return this.rows2Objects(
             await DBManager.query(`SELECT * FROM ${this.tableName()} WHERE has_note = true;`)
@@ -36,9 +42,12 @@ export default class ReadingListItemDB extends DBObject {
         await DBManager.run(`UPDATE ${this.tableName()} SET has_note = true WHERE id = ?;`, [id]);
     }
 
-    static async flipSaved(id: number): Promise<void> {
-        const item = await ReadingListItemDB.getById(id);
-        await DBManager.run(`UPDATE ${this.tableName()} SET saved = ? WHERE id = ?;`, [!item.saved, id])
+    static async flipSaved(id: number, saved: boolean): Promise<void> {
+        await DBManager.run(`UPDATE ${this.tableName()} SET saved = ? WHERE id = ?;`, [saved, id])
+    }
+
+    static async flipRead(id: number, read: boolean): Promise<void> {
+        await DBManager.run(`UPDATE ${this.tableName()} SET read = ? WHERE id = ?;`, [read, id])
     }
 
     static async getAll(): Promise<ReadingListItem[]> {

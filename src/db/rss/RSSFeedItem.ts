@@ -17,9 +17,18 @@ export default class RSSFeedItem extends DBObject {
         return RSSFeedItem.rows2Objects(await this._getAll());
     }
 
-    static async flipSaved(id: number): Promise<void> {
-        const item = await RSSFeedItem.getById(id);
-        await DBManager.run(`UPDATE feed_item SET saved = ? WHERE id = ?;`, [!item.saved, id]);
+    static async getUnread(): Promise<FeedItem[]> {
+        return RSSFeedItem.rows2Objects(
+            await DBManager.query(`SELECT * FROM feed_item WHERE read = false;`)
+        );
+    }
+
+    static async flipSaved(id: number, saved: boolean): Promise<void> {
+        await DBManager.run(`UPDATE feed_item SET saved = ? WHERE id = ?;`, [saved, id]);
+    }
+
+    static async flipRead(id: number, read: boolean): Promise<void> {
+        await DBManager.run(`UPDATE feed_item SET read = ? WHERE id = ?;`, [read, id]);
     }
 
     static async setHasNote(id: number): Promise<void> {
