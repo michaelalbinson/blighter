@@ -115,7 +115,9 @@ class ReloadableListView {
         if (this._currentStartIndex === 0) {
             this._pageLeftButton.setAttribute('disabled', 'disabled');
             this._toStartButton.setAttribute('disabled', 'disabled');
-        } else if (this._currentStartIndex === MAX_INDEX) {
+        }
+
+        if (this._currentStartIndex === MAX_INDEX || (this._currentStartIndex + this._pageSize) > (this._filteredItemList?.length || 0)) {
             this._pageRightButton.setAttribute('disabled', 'disabled');
             this._toEndButton.setAttribute('disabled', 'disabled');
         }
