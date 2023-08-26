@@ -1,9 +1,9 @@
 'use strict';
 
-import FeedItem from "../db/rss/types/FeedItem";
-import DataSource from "./DataSource";
-import RSSFeedItem from "../db/rss/RSSFeedItem";
-import RSSFeed from "../db/rss/RSSFeed";
+import FeedItem from "./types/FeedItem";
+import DataSource from "../../data-sources/DataSource";
+import RSSFeedItem from "./RSSFeedItem";
+import RSSFeed from "./RSSFeed";
 
 class FeedItemDS implements DataSource<FeedItem> {
     async getActive(): Promise<FeedItem[]> {

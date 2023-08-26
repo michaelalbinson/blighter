@@ -6,8 +6,13 @@ import RSSFeedItem from "../db/rss/RSSFeedItem";
 import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
 import Logger from "../Logger";
 import {Response, Request} from "express";
+import DataSourceCollector from "../data-sources/DataSourceCollector";
+import FeedItemDS from "../db/rss/FeedItemDS";
+import ReadingListItemDS from "../db/reading_list/ReadingListItemDS";
 
 export default class WebUtils {
+    static dataSourceCollector: DataSourceCollector;
+
     static async resolveItem(itemId: string): Promise<FeedItem | ReadingListItem> {
         let item: FeedItem|ReadingListItem;
         if (itemId.includes('feed_item')) {
@@ -30,5 +35,15 @@ export default class WebUtils {
             Logger.debug(e);
             res.status(500).send();
         }
+    }
+
+    static getDataSourceCollector(): DataSourceCollector {
+        if (this.dataSourceCollector)
+            return this.dataSourceCollector;
+
+        this.dataSourceCollector = new DataSourceCollector();
+        this.dataSourceCollector.register(FeedItemDS);
+        this.dataSourceCollector.register(ReadingListItemDS);
+        return this.dataSourceCollector;
     }
 }

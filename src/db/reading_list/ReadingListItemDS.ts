@@ -1,8 +1,8 @@
 'use strict';
 
-import ReadingListItem from "../db/reading_list/types/ReadingListItem";
-import DataSource from "./DataSource";
-import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
+import ReadingListItem from "./types/ReadingListItem";
+import DataSource from "../../data-sources/DataSource";
+import ReadingListItemDB from "./ReadingListItemDB";
 
 class ReadingListItemDS implements DataSource<ReadingListItem> {
     async getActive(): Promise<ReadingListItem[]> {

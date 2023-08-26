@@ -2,34 +2,37 @@
 
 import DataSource from "./DataSource";
 import DataSourceType from "./types/DataSourceType";
-import FeedItemDS from "./FeedItemDS";
-import ReadingListItemDS from "./ReadingListItemDS";
 
 type CollectorFn = (a: DataSource<DataSourceType>) => Promise<DataSourceType[]>;
 
 export default class DataSourceCollector {
-    static async getAll(): Promise<DataSourceType[]> {
-        return await this._collect(source => source.getAll());
+    private sources: DataSource<DataSourceType>[] = [];
+
+    register(source: DataSource<DataSourceType>) {
+        this.sources.push(source);
     }
 
-    static async getActive() {
-        return await this._collect(source => source.getActive());
+    async getAll(): Promise<DataSourceType[]> {
+        return await DataSourceCollector._collect(this.sources, source => source.getAll());
     }
 
-    static async getUnread() {
-        return await this._collect(source => source.getUnread());
+    async getActive() {
+        return await DataSourceCollector._collect(this.sources, source => source.getActive());
     }
 
-    static async getSaved() {
-        return await this._collect(source => source.getSaved());
+    async getUnread() {
+        return await DataSourceCollector._collect(this.sources, source => source.getUnread());
     }
 
-    static async getAnnotated() {
-        return await this._collect(source => source.getAnnotated());
+    async getSaved() {
+        return await DataSourceCollector._collect(this.sources, source => source.getSaved());
     }
 
-    static async _collect(lambda: CollectorFn): Promise<DataSourceType[]> {
-        const sources = this._dataSources();
+    async getAnnotated() {
+        return await DataSourceCollector._collect(this.sources, source => source.getAnnotated());
+    }
+
+    static async _collect(sources: DataSource<DataSourceType>[], lambda: CollectorFn): Promise<DataSourceType[]> {
         let dst = [] as DataSourceType[];
         for (let source of sources)
             dst = dst.concat(await lambda(source));
@@ -37,12 +40,5 @@ export default class DataSourceCollector {
         return dst.sort(
             (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
         );
-    }
-
-    static _dataSources(): DataSource<DataSourceType>[] {
-        return [
-            FeedItemDS,
-            ReadingListItemDS
-        ]
     }
 }

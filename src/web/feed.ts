@@ -5,8 +5,8 @@ import RSSFeed from "../db/rss/RSSFeed";
 import RSSManager from "../db/rss/RSSManager";
 import {join} from "path";
 import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
-import DataSourceCollector from "../data-sources/DataSourceCollector";
-import feedItemDS from "../data-sources/FeedItemDS";
+import feedItemDS from "../db/rss/FeedItemDS";
+import WebUtils from "./WebUtils";
 
 export default function setupFeedRoutes(app: Express) {
     app.get('/feeds', async (req, res) => {
@@ -14,18 +14,19 @@ export default function setupFeedRoutes(app: Express) {
         res.status(200).send(feeds);
     });
 
+
     app.get('/feed', async (req, res) => {
         let items;
         if (req.query.id) // TODO expand to allow single-domain selection
             items = await feedItemDS.singleFeed(Number(req.query.id));
         else if (req.query.saved)
-            items = await DataSourceCollector.getSaved();
+            items = await WebUtils.getDataSourceCollector().getSaved();
         else if (req.query.unread)
-            items = await DataSourceCollector.getUnread();
+            items = await WebUtils.getDataSourceCollector().getUnread();
         else if (req.query.annotated)
-            items = await DataSourceCollector.getAnnotated();
+            items = await WebUtils.getDataSourceCollector().getAnnotated();
         else
-            items = await DataSourceCollector.getActive();
+            items = await WebUtils.getDataSourceCollector().getActive();
 
         res.status(200).send(items);
     });
