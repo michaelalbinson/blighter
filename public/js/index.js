@@ -35,7 +35,7 @@ window.onload = async () => {
         return `/item-note?itemId=${fullItemId(item)}`;
     }
 
-    const buildListItem = (item) => {
+    const buildListItem = (item, reloadList) => {
         const link = document.createElement('a');
         link.href = item.link;
         link.target = '_blank';
@@ -70,6 +70,7 @@ window.onload = async () => {
 
             item.saved = !item.saved;
             saveButton.innerText = item.saved ? 'Unsave' : 'Save';
+            reloadList(true);
             if (window.location.href.includes('/saved'))
                 window.location.reload();
         });
@@ -95,6 +96,7 @@ window.onload = async () => {
 
             item.read = isRead;
             readButton.innerText = isRead ? 'Mark unread' : 'Mark read';
+            reloadList(true);
             if (window.location.href.includes('/unread'))
                 window.location.reload();
         };

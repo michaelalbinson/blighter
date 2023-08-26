@@ -4,6 +4,7 @@ class ReloadableListView {
     constructor(listRootID, pageSize, getItemsFn, getListCellFn, filterFn) {
         this.listRoot = document.getElementById(listRootID);
         this._renderSearchInput();
+        this._renderQuickFilters();
         this._renderListTarget();
         this._renderPaginationButtons();
 
@@ -11,11 +12,18 @@ class ReloadableListView {
         this._getListCellFn = getListCellFn;
         this._filterFn = filterFn;
 
+        this._currentSearchTerm = '';
         this._itemList = [];
         this._filteredItemList = [];
         this._currentStartIndex = 0;
         this._currentListElement = null;
         this._pageSize = pageSize;
+        this._quickFilters = {
+            saved: false,
+            unread: false,
+            read: false,
+            annotated: false
+        }
     }
 
     async _loadList() {
@@ -23,7 +31,10 @@ class ReloadableListView {
         this._filteredItemList = this._itemList;
     }
 
-    _renderList() {
+    _renderList(runFilters = false) {
+        if (runFilters)
+            this._runFilters();
+
         this._managePaginationButtonState();
         if (this._currentListElement)
             this.listTarget.removeChild(this._currentListElement);
@@ -32,7 +43,7 @@ class ReloadableListView {
         if (this._filteredItemList.length > 0 && this._filteredItemList[0].id) {
             const elsToRender = this._filteredItemList.slice(this._currentStartIndex, this._currentStartIndex + this._pageSize);
             for (let el of elsToRender) {
-                const li = this._getListCellFn(el);
+                const li = this._getListCellFn(el, this._renderList.bind(this));
                 newList.appendChild(li);
             }
         } else {
@@ -50,15 +61,14 @@ class ReloadableListView {
         this.listRoot.appendChild(this.listTarget);
     }
 
-    async render() {
+    async render(runFilters = false) {
         if (this._filteredItemList.length === 0)
             await this._loadList();
 
-        this._renderList();
+        this._renderList(runFilters);
     }
 
     _renderPaginationButtons() {
-        const LAST_PAGE = (Math.floor((this._filteredItemList?.length || 0) / this._pageSize));
         this._pageRightButton = button('>', () => {
             if (this._currentStartIndex < (this._filteredItemList.length - (this._pageSize - 1)))
                 this._currentStartIndex += this._pageSize;
@@ -74,7 +84,7 @@ class ReloadableListView {
         });
 
         this._toStartButton = button('<<', () => {
-            this._currentStartIndex = 0;
+            this._resetPageIndex();
             this._renderList();
         });
 
@@ -124,21 +134,66 @@ class ReloadableListView {
         input.id = 'search-input';
         input.placeholder = '🔎 Quick filter...';
         input.addEventListener('keyup', () => {
-            const searchTerm = input.value;
-            if (!searchTerm || searchTerm === '') {
-                this._filteredItemList = this._itemList;
-                return this._renderList();
-            }
-
-            this._currentStartIndex = 0;
-            this._filteredItemList = this._itemList.filter(entry => {
-                return this._filterFn(entry, searchTerm);
-            });
-
-            this._renderList();
+            this._currentSearchTerm = input.value;
+            this._resetPageIndex();
+            this._renderList(true);
         });
         searchForm.appendChild(label);
         searchForm.appendChild(input);
         this.listRoot.appendChild(searchForm);
+    }
+
+    _runFilters() {
+        this._filteredItemList = this._itemList;
+        this._userFilter();
+        this._builtinFilters();
+    }
+
+    _userFilter() {
+        // nothing to do
+        if (!this._currentSearchTerm || this._currentSearchTerm === '')
+            return;
+
+        this._filteredItemList = this._filteredItemList.filter(entry => {
+            return this._filterFn(entry, this._currentSearchTerm);
+        });
+    }
+
+    _builtinFilters() {
+        if (this._quickFilters.read)
+            this._filteredItemList = this._filteredItemList.filter(item => item.read);
+
+        if (this._quickFilters.unread)
+            this._filteredItemList = this._filteredItemList.filter(item => !item.read);
+
+        if (this._quickFilters.annotated)
+            this._filteredItemList = this._filteredItemList.filter(item => item.hasNote);
+
+        if (this._quickFilters.saved)
+            this._filteredItemList = this._filteredItemList.filter(item => item.saved);
+    }
+
+    _resetPageIndex() {
+        this._currentStartIndex = 0;
+    }
+
+    _renderQuickFilters() {
+        const div = document.createElement('div');
+        div.classList.add('filter-btn-group');
+        const clickHandler = (checkbox, filterName) => {
+            this._quickFilters[filterName] = checkbox.checked;
+            this._resetPageIndex();
+            this._renderList(true);
+        };
+        const unread = checkbox('Unread', (checkbox) => { clickHandler(checkbox, 'unread'); });
+        const read = checkbox('Read', (checkbox) => { clickHandler(checkbox, 'read'); });
+        const annotated = checkbox('Annotated', (checkbox) => { clickHandler(checkbox, 'annotated'); });
+        const saved = checkbox('Saved', (checkbox) => { clickHandler(checkbox, 'saved'); });
+
+        div.appendChild(unread);
+        div.appendChild(read);
+        div.appendChild(annotated);
+        div.appendChild(saved);
+        this.listRoot.appendChild(div);
     }
 }

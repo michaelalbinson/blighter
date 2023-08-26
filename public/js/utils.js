@@ -29,3 +29,24 @@ function getSpan(text) {
     span.innerText = text;
     return span;
 }
+
+function checkbox(text, clickFn) {
+    const container = getSpan('');
+    container.classList.add('checkbox-button');
+    const identifier = text.toLowerCase().replace(' ', '_');
+    const label = document.createElement('label');
+    label.for = identifier;
+    label.innerText = text;
+    const input = document.createElement('input');
+    input.name = identifier;
+    input.type = 'checkbox';
+    input.id = identifier;
+    input.title = text;
+    input.addEventListener('click', () => {
+        input.checked ? label.classList.add('checked') : label.classList.remove('checked');
+        clickFn(input)
+    });
+    container.appendChild(label);
+    container.appendChild(input);
+    return container;
+}
