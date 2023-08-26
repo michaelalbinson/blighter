@@ -2,6 +2,7 @@
     --header-height: 5rem;
     --theme-1: #ff7e00;
     --theme-active: #ee5e00;
+    --theme-disabled: gray;
     --text-color: white;
     --background-color: #222222;
 }
@@ -127,6 +128,11 @@ main button, div.leading-button-group a {
     margin: 0.25rem;
     cursor: pointer;
     color: black;
+}
+
+main button[disabled], main button[disabled]:hover {
+    background-color: var(--theme-disabled);
+    cursor: not-allowed;
 }
 
 main button:hover, div.leading-button-group a:hover {

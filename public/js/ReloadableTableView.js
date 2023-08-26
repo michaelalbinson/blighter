@@ -24,6 +24,7 @@ class ReloadableListView {
     }
 
     _renderList() {
+        this._managePaginationButtonState();
         if (this._currentListElement)
             this.listTarget.removeChild(this._currentListElement);
 
@@ -57,37 +58,57 @@ class ReloadableListView {
     }
 
     _renderPaginationButtons() {
-        const pageRight = button('>', () => {
+        const LAST_PAGE = (Math.floor((this._filteredItemList?.length || 0) / this._pageSize));
+        this._pageRightButton = button('>', () => {
             if (this._currentStartIndex < (this._filteredItemList.length - (this._pageSize - 1)))
                 this._currentStartIndex += this._pageSize;
 
             this._renderList();
         });
 
-        const pageLeft = button('<', () => {
+        this._pageLeftButton = button('<', () => {
             if (this._currentStartIndex !== 0)
                 this._currentStartIndex -= this._pageSize;
 
             this._renderList();
         });
 
-        const toStartButton = button('<<', () => {
+        this._toStartButton = button('<<', () => {
             this._currentStartIndex = 0;
             this._renderList();
         });
 
-        const toEndButton = button('>>', () => {
+        this._toEndButton = button('>>', () => {
             this._currentStartIndex = this._pageSize * (Math.floor(this._filteredItemList.length / this._pageSize));
             this._renderList();
         });
 
+        this._managePaginationButtonState();
+
         const lbg = document.createElement('div');
         lbg.id = 'trailing-button-group';
-        lbg.appendChild(toStartButton);
-        lbg.appendChild(pageLeft);
-        lbg.appendChild(pageRight);
-        lbg.appendChild(toEndButton);
+        lbg.appendChild(this._toStartButton);
+        lbg.appendChild(this._pageLeftButton);
+        lbg.appendChild(this._pageRightButton);
+        lbg.appendChild(this._toEndButton);
         this.listRoot.appendChild(lbg);
+    }
+
+    _enable(...buttons) {
+        for (let button of buttons)
+            button.removeAttribute('disabled');
+    }
+
+    _managePaginationButtonState() {
+        const MAX_INDEX = this._pageSize * (Math.floor((this._filteredItemList?.length || 0) / this._pageSize));
+        this._enable(this._pageLeftButton, this._pageRightButton, this._toStartButton, this._toEndButton);
+        if (this._currentStartIndex === 0) {
+            this._pageLeftButton.setAttribute('disabled', 'disabled');
+            this._toStartButton.setAttribute('disabled', 'disabled');
+        } else if (this._currentStartIndex === MAX_INDEX) {
+            this._pageRightButton.setAttribute('disabled', 'disabled');
+            this._toEndButton.setAttribute('disabled', 'disabled');
+        }
     }
 
     _renderSearchInput() {
