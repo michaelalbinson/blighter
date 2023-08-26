@@ -9,7 +9,6 @@ import {Response, Request} from "express";
 
 export default class WebUtils {
     static async resolveItem(itemId: string): Promise<FeedItem | ReadingListItem> {
-        console.log(itemId);
         let item: FeedItem|ReadingListItem;
         if (itemId.includes('feed_item')) {
             const feedItemId = Number(itemId.split('feed_item-')[1])
@@ -23,7 +22,7 @@ export default class WebUtils {
         return item;
     };
 
-    static async defaultReqHandling(req: Request, res: Response, action: () => Promise<void>) {
+    static async defaultReqHandling(req: Request, res: Response, action: () => Promise<void|any>) {
         Logger.debug(`Request received to: ${req.url}`);
         try {
             await action();
