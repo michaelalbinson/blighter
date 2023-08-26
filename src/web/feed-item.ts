@@ -9,7 +9,7 @@ import Logger from "../Logger";
 
 export default function setupFeedItemRoutes(app: Express) {
     app.post('/save-item', async (req, res) => {
-        await WebUtils.defaultErrorHandling(req, res, async () => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
             const itemId = (req.body as {itemId: string}).itemId;
             if (!itemId) {
                res.status(400).send();
@@ -27,7 +27,7 @@ export default function setupFeedItemRoutes(app: Express) {
     });
 
     app.get('/feed-item', async (req, res) => {
-        await WebUtils.defaultErrorHandling(req, res, async () => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
             const itemId = Number(req.query['itemID'])
             if (!itemId || isNaN(itemId)) {
                 res.status(400).send();
@@ -40,7 +40,7 @@ export default function setupFeedItemRoutes(app: Express) {
     });
 
     app.get('/reading-list-item', async (req, res) => {
-        await WebUtils.defaultErrorHandling(req, res, async () => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
             const itemId = Number(req.query['itemID'])
             if (!itemId || isNaN(itemId)) {
                 res.status(400).send();
@@ -53,7 +53,7 @@ export default function setupFeedItemRoutes(app: Express) {
     });
 
     app.post('/reading-list-item', async (req, res) => {
-        await WebUtils.defaultErrorHandling(req, res, async () => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
             let {url, title} = (req.body as { url: string, title?: string })
             const domain = ReadingListItemDB.getDomain(url);
 

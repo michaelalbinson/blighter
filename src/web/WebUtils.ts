@@ -23,7 +23,8 @@ export default class WebUtils {
         return item;
     };
 
-    static async defaultErrorHandling(req: Request, res: Response, action: () => Promise<void>) {
+    static async defaultReqHandling(req: Request, res: Response, action: () => Promise<void>) {
+        Logger.debug(`Request received to: ${req.url}`);
         try {
             await action();
         } catch (e) {
