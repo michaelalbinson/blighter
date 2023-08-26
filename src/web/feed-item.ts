@@ -6,6 +6,7 @@ import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
 import ReadingListItem from "../db/reading_list/types/ReadingListItem";
 import WebUtils from "./WebUtils";
 import Logger from "../Logger";
+import {join} from "path";
 
 export default function setupFeedItemRoutes(app: Express) {
     app.post('/save-item', async (req, res) => {
@@ -44,6 +45,10 @@ export default function setupFeedItemRoutes(app: Express) {
             const feedItem = await ReadingListItemDB.getById(Number(itemId));
             res.status(200).send(feedItem);
         });
+    });
+
+    app.get('/add-feed-item', async (req, res) => {
+        res.status(200).sendFile(join(process.cwd(), 'public/add-feed-item.html'));
     });
 
     app.post('/reading-list-item', async (req, res) => {

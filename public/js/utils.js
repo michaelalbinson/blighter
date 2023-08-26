@@ -23,3 +23,9 @@ function addLink(text, href) {
     link.innerText = text;
     return link;
 }
+
+function getSpan(text) {
+    const span = document.createElement('span');
+    span.innerText = text;
+    return span;
+}

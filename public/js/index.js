@@ -38,8 +38,7 @@ window.onload = async () => {
         link.href = item.link;
         link.target = '_blank';
         link.innerText = item.title;
-        const span = document.createElement('span');
-        span.innerText = new Date(item.pubDate).toString() + " - ";
+        const span = getSpan(new Date(item.pubDate).toString() + " - ");
         const a2 = document.createElement('a');
         if (item.feed) {
             a2.innerText = item.feed.name;
@@ -49,10 +48,9 @@ window.onload = async () => {
             a2.href = item.link;
         }
         span.appendChild(a2);
-        const span2 = document.createElement('span');
-        span2.innerText = item.categories;
-        const span3 = document.createElement('span');
-        span3.classList.add('links');
+
+        const span2 = getSpan('');
+        span2.classList.add('links');
         const saveButton = button(item.saved ? 'Unsave' : 'Save', async () => {
             const res = await fetch('/save-item', {
                 method: 'POST',
@@ -73,21 +71,41 @@ window.onload = async () => {
             if (window.location.href.includes('/saved'))
                 window.location.reload();
         });
-        span3.appendChild(saveButton);
-        const span4 = document.createElement('span');
-        span4.innerText = ' - ';
-        span3.appendChild(span4);
+        span2.appendChild(saveButton);
+        span2.appendChild(getSpan(' - '));
+        const readButton = button(item.saved ? 'Mark read' : 'Mark unread', async () => {
+            const res = await fetch('/item/mark-read', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ itemId: fullItemId(item), saved: item.saved })
+            });
+
+            if (!res.ok) {
+                console.error('Failed to save item');
+                return;
+            }
+
+            readButton.innerText = item.saved ? 'Mark unread' : 'Mark read';
+            item.saved = !item.saved;
+            if (window.location.href.includes('/unread'))
+                window.location.reload();
+        });
+        span2.appendChild(readButton);
+        span2.appendChild(getSpan(' - '));
 
         const noteButton = addLink(item.hasNote ? 'View/Edit Note' : 'Add Note', getNoteURL(item));
-        span3.appendChild(noteButton);
+        span2.appendChild(noteButton);
         const li = document.createElement('li');
         li.appendChild(link);
         li.appendChild(document.createElement('br'));
         li.appendChild(span);
         li.appendChild(document.createElement('br'));
-        li.appendChild(span2);
+        li.appendChild(getSpan(item.categories || "No categories"));
         li.appendChild(document.createElement('br'));
-        li.appendChild(span3);
+        li.appendChild(span2);
         return li;
     };
 
