@@ -1,14 +1,14 @@
 'use strict';
 
-import FeedItem from "../db/rss/types/FeedItem";
-import ReadingListItem from "../db/reading_list/types/ReadingListItem";
-import RSSFeedItem from "../db/rss/RSSFeedItem";
-import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
+import FeedItem from "../rss/types/FeedItem";
+import ReadingListItem from "../reading_list/types/ReadingListItem";
+import FeedItemDB from "../rss/FeedItemDB";
+import ReadingListItemDB from "../reading_list/ReadingListItemDB";
 import Logger from "../Logger";
 import {Response, Request} from "express";
 import DataSourceCollector from "../data-sources/DataSourceCollector";
-import FeedItemDS from "../db/rss/FeedItemDS";
-import ReadingListItemDS from "../db/reading_list/ReadingListItemDS";
+import FeedItemDS from "../rss/FeedItemDS";
+import ReadingListItemDS from "../reading_list/ReadingListItemDS";
 
 export default class WebUtils {
     static dataSourceCollector: DataSourceCollector;
@@ -17,7 +17,7 @@ export default class WebUtils {
         let item: FeedItem|ReadingListItem;
         if (itemId.includes('feed_item')) {
             const feedItemId = Number(itemId.split('feed_item-')[1])
-            item = await RSSFeedItem.getById(feedItemId);
+            item = await FeedItemDB.getById(feedItemId);
         } else if (itemId.includes('reading_list_item')) {
             const feedItemId = Number(itemId.split('reading_list_item-')[1])
             item = await ReadingListItemDB.getById(feedItemId);

@@ -2,10 +2,10 @@
 
 import {Express} from "express";
 import {join} from "path";
-import NoteFS from "../fs/NoteFS";
-import RSSFeedItem from "../db/rss/RSSFeedItem";
-import NoteDB from "../db/NoteDB";
-import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
+import NoteFS from "../core/fs/NoteFS";
+import FeedItemDB from "../rss/FeedItemDB";
+import NoteDB from "../core/db/NoteDB";
+import ReadingListItemDB from "../reading_list/ReadingListItemDB";
 import WebUtils from "./WebUtils";
 
 export default function setupNoteRoutes(app: Express) {
@@ -16,7 +16,7 @@ export default function setupNoteRoutes(app: Express) {
     const setHasNote = async (itemId: string): Promise<void> => {
         if (itemId.includes('feed_item')) {
             const feedItemId = Number(itemId.split('feed_item-')[1])
-            await RSSFeedItem.setHasNote(feedItemId);
+            await FeedItemDB.setHasNote(feedItemId);
         } else if (itemId.includes('reading_list_item')) {
             const feedItemId = Number(itemId.split('reading_list_item-')[1])
             await ReadingListItemDB.setHasNote(feedItemId);

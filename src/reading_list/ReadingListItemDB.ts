@@ -1,8 +1,8 @@
 'use strict';
 
 import ReadingListItem from "./types/ReadingListItem";
-import DBObject from "../DBObject";
-import DBManager from "../DBManager";
+import DBObject from "../core/db/DBObject";
+import DBManager from "../core/db/DBManager";
 import * as cheerio from 'cheerio';
 
 export default class ReadingListItemDB extends DBObject {

@@ -1,7 +1,7 @@
 'use strict';
 
 import ReadingListItem from "./types/ReadingListItem";
-import DataSource from "../../data-sources/DataSource";
+import DataSource from "../data-sources/DataSource";
 import ReadingListItemDB from "./ReadingListItemDB";
 
 class ReadingListItemDS implements DataSource<ReadingListItem> {

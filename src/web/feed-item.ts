@@ -1,9 +1,9 @@
 'use strict';
 
 import {Express} from "express";
-import RSSFeedItem from "../db/rss/RSSFeedItem";
-import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
-import ReadingListItem from "../db/reading_list/types/ReadingListItem";
+import FeedItemDB from "../rss/FeedItemDB";
+import ReadingListItemDB from "../reading_list/ReadingListItemDB";
+import ReadingListItem from "../reading_list/types/ReadingListItem";
 import WebUtils from "./WebUtils";
 import Logger from "../Logger";
 import {join} from "path";
@@ -17,7 +17,7 @@ export default function setupFeedItemRoutes(app: Express) {
 
             const item = await WebUtils.resolveItem(itemId);
             if ('feedID' in item)
-                await RSSFeedItem.flipSaved(item.id, Boolean(saved));
+                await FeedItemDB.flipSaved(item.id, Boolean(saved));
             else
                 await ReadingListItemDB.flipSaved(item.id, Boolean(saved));
 
@@ -33,7 +33,7 @@ export default function setupFeedItemRoutes(app: Express) {
 
             const item = await WebUtils.resolveItem(itemId);
             if ('feedID' in item)
-                await RSSFeedItem.flipRead(item.id, Boolean(read));
+                await FeedItemDB.flipRead(item.id, Boolean(read));
             else
                 await ReadingListItemDB.flipRead(item.id, Boolean(read));
 
@@ -47,7 +47,7 @@ export default function setupFeedItemRoutes(app: Express) {
             if (!itemId || isNaN(itemId))
                 return res.status(400).send();
 
-            const feedItem = await RSSFeedItem.getById(Number(itemId));
+            const feedItem = await FeedItemDB.getById(Number(itemId));
             res.status(200).send(feedItem);
         });
     });

@@ -1,16 +1,16 @@
 'use strict';
 
 import {Express} from "express";
-import RSSFeed from "../db/rss/RSSFeed";
-import RSSManager from "../db/rss/RSSManager";
+import RSSFeedDB from "../rss/RSSFeedDB";
+import RSSManager from "../rss/RSSManager";
 import {join} from "path";
-import ReadingListItemDB from "../db/reading_list/ReadingListItemDB";
-import feedItemDS from "../db/rss/FeedItemDS";
+import ReadingListItemDB from "../reading_list/ReadingListItemDB";
+import feedItemDS from "../rss/FeedItemDS";
 import WebUtils from "./WebUtils";
 
 export default function setupFeedRoutes(app: Express) {
     app.get('/feeds', async (req, res) => {
-        const feeds = await RSSFeed.getAll();
+        const feeds = await RSSFeedDB.getAll();
         res.status(200).send(feeds);
     });
 
@@ -33,18 +33,18 @@ export default function setupFeedRoutes(app: Express) {
 
     app.post('/update-feeds', async (req, res) => {
         // checkboxes are special https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox#additional_attributes
-        const feeds = await RSSFeed.getAll();
+        const feeds = await RSSFeedDB.getAll();
         for (let feed of feeds) {
             if (req.body[`feed_${feed.id}`]) {
                 if (feed.active)
                     continue;
 
-                await RSSFeed.setActive(feed.id, true);
+                await RSSFeedDB.setActive(feed.id, true);
             } else {
                 if (!feed.active)
                     continue;
 
-                await RSSFeed.setActive(feed.id, false);
+                await RSSFeedDB.setActive(feed.id, false);
             }
         }
         res.redirect('/manage');
@@ -57,7 +57,7 @@ export default function setupFeedRoutes(app: Express) {
     });
 
     app.get('/rss-feed', async (req, res) => {
-        const feeds = await RSSFeed.getAll();
+        const feeds = await RSSFeedDB.getAll();
         res.status(200).send(feeds);
     });
 

@@ -2,17 +2,17 @@
 
 import {XMLParser} from "fast-xml-parser";
 import Feed from "./types/Feed";
-import Logger from "../../Logger";
-import RSSFeed from "./RSSFeed";
+import Logger from "../Logger";
+import RSSFeedDB from "./RSSFeedDB";
 import FeedItem from "./types/FeedItem";
-import RSSFeedItem from "./RSSFeedItem";
+import FeedItemDB from "./FeedItemDB";
 
 export default class RSSManager {
     static async discoverFromURL(url: string): Promise<Feed> {
         const channelData = await RSSManager.fetchFeedData(url);
 
         // check if we have cached metadata first
-        const feedCacheData = await RSSFeed.getByUrl(url);
+        const feedCacheData = await RSSFeedDB.getByUrl(url);
         return {
             url: url,
             name: channelData.title,
@@ -60,8 +60,8 @@ export default class RSSManager {
     static async discoverAndInsert(url: string): Promise<Feed> {
         const feed = await RSSManager.discoverFromURL(url);
         if (feed.id === -1) {
-            await RSSFeed.insert(feed);
-            const feedDb = await RSSFeed.getByUrl(url);
+            await RSSFeedDB.insert(feed);
+            const feedDb = await RSSFeedDB.getByUrl(url);
             if (!feedDb)
                 throw new Error(`Failed to insert rss feed entry for url ${url}`);
 
@@ -73,7 +73,7 @@ export default class RSSManager {
     }
 
     static async fetchFeeds(): Promise<Feed[]> {
-        const feeds = await RSSFeed.getAll();
+        const feeds = await RSSFeedDB.getAll();
         for (const feed of feeds) {
             try {
                 feed.data = await RSSManager.fetchFeedData(feed.url);
@@ -115,7 +115,7 @@ export default class RSSManager {
                 }
 
                 try {
-                    await RSSFeedItem.insert(item);
+                    await FeedItemDB.insert(item);
                 } catch (e) {
                     Logger.warn(`Insert of feed item failed: ${item.link}`);
                 }

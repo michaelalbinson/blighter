@@ -6,7 +6,7 @@
 import {config} from 'dotenv';
 config();
 
-import DBManager from "./db/DBManager";
+import DBManager from "./core/db/DBManager";
 import WebApp from "./WebApp";
 
 (async () => {

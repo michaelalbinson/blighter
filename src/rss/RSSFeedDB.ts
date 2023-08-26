@@ -1,20 +1,20 @@
 'use strict';
 
 import Feed from "./types/Feed";
-import DBManager from "../DBManager";
-import DBObject from "../DBObject";
+import DBManager from "../core/db/DBManager";
+import DBObject from "../core/db/DBObject";
 
-export default class RSSFeed extends DBObject {
+export default class RSSFeedDB extends DBObject {
     static tableName(): string {
         return 'rss_feed';
     }
 
     static async getById(id: number): Promise<Feed> {
-        return RSSFeed.rows2Objects(await this._getById(id))[0];
+        return RSSFeedDB.rows2Objects(await this._getById(id))[0];
     }
 
     static async getByUrl(url: string): Promise<Feed> {
-        return RSSFeed.rows2Objects(
+        return RSSFeedDB.rows2Objects(
             await DBManager.fetch(`SELECT * FROM ${this.tableName()} WHERE url=?`, [url])
         )[0];
     }
@@ -24,11 +24,11 @@ export default class RSSFeed extends DBObject {
     }
 
     static async getAll(): Promise<Feed[]> {
-        return RSSFeed.rows2Objects(await this._getAll());
+        return RSSFeedDB.rows2Objects(await this._getAll());
     }
 
     static async getIdMap(): Promise<Map<number, Feed>> {
-        const feeds = await RSSFeed.getAll();
+        const feeds = await RSSFeedDB.getAll();
         const feedMap = new Map<number, Feed>;
         for (let feed of feeds)
             feedMap.set(feed.id, feed);

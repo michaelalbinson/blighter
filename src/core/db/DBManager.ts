@@ -1,11 +1,11 @@
 'use strict';
 
 import {Database, RunResult} from "sqlite3";
-import RSSFeedItem from "./rss/RSSFeedItem";
-import RSSFeed from "./rss/RSSFeed";
-import Logger from "../Logger";
+import FeedItemDB from "../../rss/FeedItemDB";
+import RSSFeedDB from "../../rss/RSSFeedDB";
+import Logger from "../../Logger";
 import NoteDB from "./NoteDB";
-import ReadingListItemDB from "./reading_list/ReadingListItemDB";
+import ReadingListItemDB from "../../reading_list/ReadingListItemDB";
 
 class DBManager {
     private readonly db: Database;
@@ -82,8 +82,8 @@ class DBManager {
     static async bootstrap(db: DBManager): Promise<void> {
         Logger.info('Bootstrapping tables');
         const promises = [
-            RSSFeed.tableSQL(),
-            RSSFeedItem.tableSQL(),
+            RSSFeedDB.tableSQL(),
+            FeedItemDB.tableSQL(),
             NoteDB.tableSQL(),
             ReadingListItemDB.tableSQL()
         ].map(async (sql) => {

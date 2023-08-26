@@ -2,11 +2,11 @@
 
 import express from 'express';
 import helmet from "helmet";
-import InitialDataLoader from "./db/InitialDataLoader";
+import InitialDataLoader from "./core/db/InitialDataLoader";
 import Logger from "./Logger";
 import {join} from 'path';
 import bodyParser from "body-parser";
-import RSSFeed from "./db/rss/RSSFeed";
+import RSSFeedDB from "./rss/RSSFeedDB";
 import setupRoutes from "./web";
 
 export default class WebApp {
@@ -28,7 +28,7 @@ export default class WebApp {
         });
 
         app.get('/saved-feed', async (req, res) => {
-            const feeds = await RSSFeed.getAll();
+            const feeds = await RSSFeedDB.getAll();
             res.status(200).send(feeds);
         });
 

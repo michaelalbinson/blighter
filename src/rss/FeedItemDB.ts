@@ -1,24 +1,24 @@
 'use strict';
 
 import FeedItem from "./types/FeedItem";
-import DBManager from "../DBManager";
-import DBObject from "../DBObject";
+import DBManager from "../core/db/DBManager";
+import DBObject from "../core/db/DBObject";
 
-export default class RSSFeedItem extends DBObject {
+export default class FeedItemDB extends DBObject {
     static tableName(): string {
         return 'feed_item';
     }
 
     static async getById(id: number): Promise<FeedItem> {
-        return RSSFeedItem.rows2Objects([await this._getById(id)])[0];
+        return FeedItemDB.rows2Objects([await this._getById(id)])[0];
     }
 
     static async getAll(): Promise<FeedItem[]> {
-        return RSSFeedItem.rows2Objects(await this._getAll());
+        return FeedItemDB.rows2Objects(await this._getAll());
     }
 
     static async getUnread(): Promise<FeedItem[]> {
-        return RSSFeedItem.rows2Objects(
+        return FeedItemDB.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE read = false;`)
         );
     }
@@ -36,7 +36,7 @@ export default class RSSFeedItem extends DBObject {
     }
 
     static async getActive(): Promise<FeedItem[]> {
-        return RSSFeedItem.rows2Objects(
+        return FeedItemDB.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE feed_id IN (
                 SELECT id FROM rss_feed WHERE active = 1
             );`)
@@ -44,19 +44,19 @@ export default class RSSFeedItem extends DBObject {
     }
 
     static async getSingleFeed(id: number): Promise<FeedItem[]> {
-        return RSSFeedItem.rows2Objects(
+        return FeedItemDB.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE feed_id = ?;`, [id])
         );
     }
 
     static async getSaved(): Promise<FeedItem[]> {
-        return RSSFeedItem.rows2Objects(
+        return FeedItemDB.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE saved = true;`)
         );
     }
 
     static async getAnnotated(): Promise<FeedItem[]> {
-        return RSSFeedItem.rows2Objects(
+        return FeedItemDB.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE has_note = true;`)
         );
     }

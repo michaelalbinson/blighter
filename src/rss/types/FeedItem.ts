@@ -1,7 +1,7 @@
 'use strict';
 
 import Feed from "./Feed";
-import DataSourceType from "../../../data-sources/types/DataSourceType";
+import DataSourceType from "../../data-sources/types/DataSourceType";
 
 export default interface FeedItem extends DataSourceType {
     author: string | null,
