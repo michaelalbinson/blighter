@@ -16,7 +16,7 @@ export default class NoteFS {
         '07-jul', '08-aug', '09-sep',
         '10-oct', '11-nov', '12-dev'
     ];
-    static NOTE_ROOT_PATH = join(__dirname, '..', '..', 'public', 'content', 'notes'); // consider overridable
+    static NOTE_ROOT_PATH = join(__dirname, '..', '..', '..', 'public', 'content', 'notes'); // consider overridable
     static dirPathExists = new Map<string, boolean>; // global cache of if a directory exists or not - not written to much
 
     static async read(fileUrl: string): Promise<Note> {
