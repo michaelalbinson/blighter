@@ -23,5 +23,8 @@ window.onload = async () => {
     const noteHeader = document.getElementById('article-info');
     noteHeader.innerHTML = `Notes for: <a href="${respJson.link}">${respJson.title}</a>`;
     document.getElementById('itemId').value = urlParams.itemId;
-    window.__testItem = respJson;
+
+
+    const noteInput = document.getElementById('note');
+    new LightweightMarkdownTextarea(noteInput).attach();
 };
