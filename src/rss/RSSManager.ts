@@ -6,6 +6,7 @@ import Logger from "../Logger";
 import RSSFeedDB from "./RSSFeedDB";
 import FeedItem from "./types/FeedItem";
 import FeedItemDB from "./FeedItemDB";
+import FileMan from "../core/fs/util/FileMan";
 
 export default class RSSManager {
     static async discoverFromURL(url: string): Promise<Feed> {
@@ -33,12 +34,16 @@ export default class RSSManager {
             throw new Error(message);
         }
 
-        const parser = new XMLParser();
         const responseText = await feedData.text();
-        let jObj = parser.parse(responseText);
+        return this.processFeedToXML(responseText, url);
+    }
+
+    static processFeedToXML(feedData: string, url: string) {
+        const parser = new XMLParser();
+        let jObj = parser.parse(feedData);
         const channelData = jObj?.rss?.channel; // test the waters to make sure the response makes sense
         if (!channelData) {
-            const message = `Response from URL is malformed: ${url}`;
+            const message = `Data from URL is malformed: ${url}`;
             Logger.error(message);
             throw new Error(message);
         }
@@ -132,5 +137,29 @@ export default class RSSManager {
             return categories.join(', ');
 
         return categories;
+    }
+
+    /**
+     * For when providers block you from downloading their feeds directly (looking at you Meta)
+     * @param filePath {string}
+     */
+    static async manualIngest(filePath: string) {
+        const fileData = await FileMan.read(filePath);
+        const feedData = this.processFeedToXML(fileData, filePath);
+        const feeds = await RSSFeedDB.getAll();
+        let matchingFeed;
+        for (let feed of feeds) {
+            if (!feed.url.includes(feedData.link))
+                continue;
+
+            matchingFeed = feed;
+            break;
+        }
+
+        if (!matchingFeed)
+            throw new Error('Failed to find a matching feed for the manual ingest');
+
+        matchingFeed.data = feedData;
+        await this.processFeeds([matchingFeed]);
     }
 }

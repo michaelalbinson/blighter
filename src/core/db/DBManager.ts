@@ -6,12 +6,13 @@ import RSSFeedDB from "../../rss/RSSFeedDB";
 import Logger from "../../Logger";
 import NoteDB from "./NoteDB";
 import ReadingListItemDB from "../../reading_list/ReadingListItemDB";
+import {join} from "path";
 
 class DBManager {
     private readonly db: Database;
 
     constructor() {
-        this.db = new Database(process.env.DB_NAME || "blighter.db");
+        this.db = new Database(join(__dirname, '..', '..', '..', process.env.DB_NAME || "blighter.db"));
     }
 
     async setup(): Promise<void> {

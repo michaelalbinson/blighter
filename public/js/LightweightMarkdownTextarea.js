@@ -47,6 +47,9 @@ class LightweightMarkdownTextarea {
         const key = event.key.toLowerCase();
         console.log(key);
         switch (key) {
+            // it's much harder to make this work with keydown because the new character isn't rendered yet, so we'd need
+            // to do a lot more manual handling of the selection stuff
+            // possible, but I'm feeling lazy today
             case 'enter':
                 this._checkToAddListMarkup();
                 break;
