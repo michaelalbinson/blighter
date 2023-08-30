@@ -21,6 +21,7 @@ function addLink(text, href) {
     const link = document.createElement('a');
     link.href = href;
     link.innerText = text;
+    link.target = '_blank';
     return link;
 }
 
