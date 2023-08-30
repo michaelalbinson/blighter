@@ -1,7 +1,6 @@
 'use strict';
 
 import {Express} from "express";
-import {join} from "path";
 import NoteFS from "../core/fs/NoteFS";
 import FeedItemDB from "../rss/FeedItemDB";
 import NoteDB from "../core/db/NoteDB";
@@ -10,7 +9,7 @@ import WebUtils from "./WebUtils";
 
 export default function setupNoteRoutes(app: Express) {
     app.get('/item-note', (req, res) => {
-        res.status(200).sendFile(join(process.cwd(), 'public/note.html'));
+        WebUtils.sendPublicFile(res, 'note.html');
     });
 
     const setHasNote = async (itemId: string): Promise<void> => {
@@ -25,36 +24,40 @@ export default function setupNoteRoutes(app: Express) {
     };
 
     app.get('/note', async(req, res) => {
-        const itemId = req.query['itemId'] as string;
-        if (!itemId)
-            return res.status(400).send();
+        await WebUtils.defaultReqHandling(req, res, async () => {
+            const itemId = req.query['itemId'] as string;
+            if (!itemId)
+                return res.status(400).send();
 
-        const item = await WebUtils.resolveItem(itemId);
-        if (await NoteDB.existsForUrl(item.link)) {
-            const dbNote = await NoteDB.getByArticleUrl(item.link);
-            const note = await NoteFS.read(dbNote.url);
-            res.status(200).send(note);
-        } else
-            res.status(404).send();
+            const item = await WebUtils.resolveItem(itemId);
+            if (await NoteDB.existsForUrl(item.link)) {
+                const dbNote = await NoteDB.getByArticleUrl(item.link);
+                const note = await NoteFS.read(dbNote.url);
+                res.status(200).send(note);
+            } else
+                res.status(404).send();
+        });
     });
 
     app.post('/note', async (req, res) => {
-        const itemId = (req.body as {itemId: string}).itemId;
-        const noteContent = (req.body as {note: string}).note;
-        if (!itemId)
-            return res.status(400).send();
+        await WebUtils.defaultReqHandling(req, res, async () => {
+            const itemId = (req.body as {itemId: string}).itemId;
+            const noteContent = (req.body as {note: string}).note;
+            if (!itemId)
+                return res.status(400).send();
 
-        const item = await WebUtils.resolveItem(itemId);
-        if (await NoteDB.existsForUrl(item.link)) {
-            const note = await NoteDB.getByArticleUrl(item.link);
-            await NoteFS.update(note.url, noteContent);
-            await NoteDB.update(note);
-        } else {
-            const note = await NoteFS.create(item, noteContent);
-            await NoteDB.insert(note);
-            await setHasNote(itemId);
-        }
+            const item = await WebUtils.resolveItem(itemId);
+            if (await NoteDB.existsForUrl(item.link)) {
+                const note = await NoteDB.getByArticleUrl(item.link);
+                await NoteFS.update(note.url, noteContent);
+                await NoteDB.update(note);
+            } else {
+                const note = await NoteFS.create(item, noteContent);
+                await NoteDB.insert(note);
+                await setHasNote(itemId);
+            }
 
-        res.redirect('back');
+            res.redirect('back');
+        });
     });
 }

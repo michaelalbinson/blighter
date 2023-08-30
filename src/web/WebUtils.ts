@@ -9,6 +9,7 @@ import {Response, Request} from "express";
 import DataSourceCollector from "../data-sources/DataSourceCollector";
 import FeedItemDS from "../rss/FeedItemDS";
 import ReadingListItemDS from "../reading_list/ReadingListItemDS";
+import {join} from "path";
 
 export default class WebUtils {
     static dataSourceCollector: DataSourceCollector;
@@ -32,7 +33,7 @@ export default class WebUtils {
         try {
             await action();
         } catch (e) {
-            Logger.debug(e);
+            Logger.error(e);
             res.status(500).send();
         }
     }
@@ -45,5 +46,9 @@ export default class WebUtils {
         this.dataSourceCollector.register(FeedItemDS);
         this.dataSourceCollector.register(ReadingListItemDS);
         return this.dataSourceCollector;
+    }
+
+    static sendPublicFile(res: Response, fileName: string): void {
+        res.status(200).sendFile(join(process.cwd(), 'public', fileName));
     }
 }
