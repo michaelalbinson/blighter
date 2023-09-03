@@ -41,7 +41,7 @@ export default function setupFeedItemRoutes(app: Express) {
         });
     });
 
-    app.get('/feed-item', async (req, res) => {
+    app.get('/item', async (req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
             const itemId = Number(req.query['itemID'])
             if (!itemId || isNaN(itemId))
@@ -64,10 +64,10 @@ export default function setupFeedItemRoutes(app: Express) {
     });
 
     app.get('/add-feed-item', async (req, res) => {
-        res.status(200).sendFile(join(process.cwd(), 'public/add-feed-item.html'));
+        WebUtils.sendPublicFile(res, 'add-feed-item.html');
     });
 
-    app.post('/reading-list-item', async (req, res) => {
+    app.post('/item', async (req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
             let {url, title} = (req.body as { url: string, title?: string })
             const domain = ReadingListItemDB.getDomain(url);
@@ -89,7 +89,7 @@ export default function setupFeedItemRoutes(app: Express) {
                 return res.status(400).send();
             }
 
-            res.status(200).redirect('/reading-list');
+            res.status(200).redirect('back');
         });
     });
 }

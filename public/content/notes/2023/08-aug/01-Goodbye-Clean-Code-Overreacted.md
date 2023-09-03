@@ -1,8 +1,8 @@
 -----------------------
 articleLink: https://overreacted.io/goodbye-clean-code/
 articleTitle: Goodbye, Clean Code — Overreacted
-createdOn: 2023-08-29T02:26:48.234Z
-updatedOn: 2023-08-29T02:27:11.352Z
+createdOn: 2023-08-29T02:27:11.352Z
+updatedOn: 2023-09-01T03:57:59.634Z
 -----------------------
 
 - Clean code is not always the best code

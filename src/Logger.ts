@@ -12,7 +12,7 @@ export default class Logger {
         console.log(this._withTimeStamp(msg));
     }
 
-    static error(msg: string) {
+    static error(msg: any) {
         console.error(this._withTimeStamp(msg));
     }
 
