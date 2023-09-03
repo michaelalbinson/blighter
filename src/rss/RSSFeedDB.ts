@@ -64,7 +64,7 @@ export default class RSSFeedDB extends DBObject {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 url TEXT NOT NULL UNIQUE,
                 name TEXT NOT NULL,
-                description TEXT NOT NULL,
+                description TEXT DEFAULT NULL,
                 last_build_date TEXT,
                 update_period TEXT,
                 active BOOLEAN NOT NULL DEFAULT TRUE

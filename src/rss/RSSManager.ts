@@ -14,15 +14,29 @@ export default class RSSManager {
 
         // check if we have cached metadata first
         const feedCacheData = await RSSFeedDB.getByUrl(url);
-        return {
-            url: url,
-            name: channelData.title,
-            description: channelData.description,
-            lastBuildDate: channelData.lastBuildDate,
-            updatePeriod: channelData['sy:updatePeriod'],
-            data: channelData,
-            id: feedCacheData?.id || -1
-        } as Feed;
+        if (channelData.item) {
+            return {
+                url: url,
+                name: channelData.title,
+                description: channelData.description,
+                lastBuildDate: channelData.lastBuildDate,
+                updatePeriod: channelData['sy:updatePeriod'],
+                data: channelData,
+                id: feedCacheData?.id || -1,
+                active: true,
+                feedItems: []
+            } as Feed;
+        } else {
+            return {
+                url: url,
+                name: channelData.title,
+                lastBuildDate: channelData.updated,
+                data: channelData,
+                id: feedCacheData?.id || -1,
+                active: true,
+                feedItems: []
+            } as Feed;
+        }
     }
 
     static async fetchFeedData(url: string): Promise<any> {
@@ -41,14 +55,23 @@ export default class RSSManager {
     static processFeedToXML(feedData: string, url: string) {
         const parser = new XMLParser();
         let jObj = parser.parse(feedData);
-        const channelData = jObj?.rss?.channel; // test the waters to make sure the response makes sense
-        if (!channelData) {
+        if (!(this.isRSSFeed(jObj) || this.isAtomFeed(jObj))) {
             const message = `Data from URL is malformed: ${url}`;
             Logger.error(message);
             throw new Error(message);
         }
 
-        return channelData;
+        return this.isRSSFeed(jObj) ?
+            jObj?.rss?.channel : // RSS feed
+            jObj?.feed; // Atom feed
+    }
+
+    static isAtomFeed(feedData: any) {
+        return feedData?.feed;
+    }
+
+    static isRSSFeed(feedData: any) {
+        return feedData?.rss?.channel;
     }
 
     static modifiers(url: string): object {
@@ -95,22 +118,23 @@ export default class RSSManager {
             if (!feed.data)
                 return feed;
 
-            Logger.info(`Processing RSS feed for url ${feed.url}`);
             feed.feedItems = [];
-            for (const item of feed.data.item) {
-                if (!feed.feedItems)
-                    continue;
+            if (feed.data.item) {
+                Logger.info(`Processing RSS feed for url ${feed.url}`);
+                for (const item of feed.data.item) {
+                    if (!feed.feedItems)
+                        continue;
 
-                feed.feedItems.push({
-                    title: item.title,
-                    link: item.link,
-                    categories: RSSManager.parseCategories(item.category),
-                    author: item['dc:creator'],
-                    pubDate: item.pubDate,
-                    description: item.description || item['content:encoded']?.slice(0, 100),
-                    feedID: feed.id,
-                    content: item.content || item['content:encoded']
-                } as FeedItem);
+                    feed.feedItems.push(this.getRSSFeedItem(item, feed));
+                }
+            } else {
+                Logger.info(`Processing Atom feed for url ${feed.url}`);
+                for (const item of feed.data.entry) {
+                    if (!feed.feedItems)
+                        continue;
+
+                    feed.feedItems.push(this.getAtomFeedItem(item, feed));
+                }
             }
 
             const promises = feed.feedItems.map(async (item: FeedItem) => {
@@ -130,6 +154,32 @@ export default class RSSManager {
         });
 
         return feeds;
+    }
+
+    static getRSSFeedItem(item: any, feed: Feed): FeedItem {
+        return {
+            title: item.title,
+            link: item.link,
+            categories: RSSManager.parseCategories(item.category),
+            author: item['dc:creator'],
+            pubDate: item.pubDate,
+            description: item.description || item['content:encoded']?.slice(0, 100),
+            feedID: feed.id,
+            content: item.content || item['content:encoded']
+        } as FeedItem
+    }
+
+    static getAtomFeedItem(item: any, feed: Feed): FeedItem {
+        return {
+            title: item.title,
+            link: item.id,
+            categories: null,
+            author: item.author.name,
+            pubDate: item.published,
+            description: item.summary || '',
+            feedID: feed.id,
+            content: null
+        } as FeedItem
     }
 
     static parseCategories(categories: string[]|string): string {
