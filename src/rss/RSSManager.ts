@@ -100,8 +100,17 @@ export default class RSSManager {
         return feed;
     }
 
+    static async updateSingleFeed(feedId: number) {
+        const feed = await RSSFeedDB.getById(feedId);
+        return await this.updateFeeds([feed]);
+    }
+
     static async fetchFeeds(): Promise<Feed[]> {
         const feeds = await RSSFeedDB.getAll();
+        return await this.updateFeeds(feeds);
+    }
+
+    private static async updateFeeds(feeds: Feed[]): Promise<Feed[]> {
         for (const feed of feeds) {
             try {
                 feed.data = await RSSManager.fetchFeedData(feed.url);

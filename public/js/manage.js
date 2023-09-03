@@ -11,9 +11,8 @@ window.onload = async () => {
     for (let feed of feeds) {
         const label = document.createElement('label');
         label.for = `feed_${feed.id}`;
-        const link = document.createElement('a');
-        link.href = `/single-feed?id=${feed.id}`;
-        link.innerText = feed.name;
+
+        const link = addLink(feed.name, `/single-feed?id=${feed.id}`);
         label.appendChild(link);
         const input = document.createElement('input');
         input.type = 'checkbox';
@@ -21,9 +20,21 @@ window.onload = async () => {
         input.checked = feed.active === 1;
         input.name = `feed_${feed.id}`;
 
+        const lastUpdatedSpan = getSpan(`Last updated: ${feed.lastBuildDate}`);
+        const updateNowButton = button('Update Now', async () => {
+            const res = await fetch(`/feed?id=${feed.id}`, {method: 'POST'});
+            if (!res.ok)
+                return console.error('Failed to update feed');
+
+            window.location.href = `/single-feed?id=${feed.id}`;
+        });
+        updateNowButton.type = 'button';
+
         const li = document.createElement('li');
         li.appendChild(label);
         li.appendChild(input);
+        li.appendChild(lastUpdatedSpan);
+        li.appendChild(updateNowButton)
         listRoot.appendChild(li);
     }
 }

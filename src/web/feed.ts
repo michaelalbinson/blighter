@@ -79,15 +79,29 @@ export default function setupFeedRoutes(app: Express) {
     let fetchFeedLocked = false;
     app.post('/fetch-feeds', async (req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
-            if (fetchFeedLocked) {
-                res.status(400).send('Refresh already in progress');
-                return;
-            }
+            if (fetchFeedLocked)
+                return res.status(400).send('Refresh already in progress');
 
             fetchFeedLocked = true;
             await RSSManager.fetchFeeds();
             res.redirect('/');
             fetchFeedLocked = false;
+        });
+    });
+
+    app.post('/feed', async (req, res) => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
+            if (fetchFeedLocked)
+                return res.status(400).send('Refresh already in progress');
+
+            const feedId = Number(req.query.id);
+            if (isNaN(feedId))
+                return res.status(400).send();
+
+            fetchFeedLocked = true;
+            await RSSManager.updateSingleFeed(feedId);
+            fetchFeedLocked = false;
+            res.status(200).send();
         });
     });
 
