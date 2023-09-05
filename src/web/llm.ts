@@ -12,7 +12,12 @@ export default function setupLLMRoutes(app: Express) {
     app.post('/llm', async (req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
             const prompt = (req.body as {prompt: string}).prompt;
-            const response = await LLM.generateChatResponse(prompt);
+
+            // sometimes the first response from the llm comes back empty, so try again if that happens
+            let response = await LLM.generateChatResponse(prompt);
+            if (response.trim() === '')
+                response = await LLM.generateChatResponse(prompt);
+
             res.status(200).send(response);
         });
     });
