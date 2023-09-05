@@ -29,7 +29,7 @@ export default class WebUtils {
     };
 
     static async defaultReqHandling(req: Request, res: Response, action: () => Promise<void|any>) {
-        Logger.debug(`Request received to: ${req.url}`);
+        Logger.debug(`${req.method} request received to: ${req.url}`);
         try {
             await action();
         } catch (e) {

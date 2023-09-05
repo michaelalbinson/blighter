@@ -8,8 +8,14 @@ config();
 
 import DBManager from "./core/db/DBManager";
 import WebApp from "./WebApp";
+import API from "./llm/API";
 
 (async () => {
     await DBManager.setup();
     WebApp.start();
 })();
+
+process.on('SIGINT', async () => {
+    await API.testSeam_killAll();
+    process.exit(0);
+});

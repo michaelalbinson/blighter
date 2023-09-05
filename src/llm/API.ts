@@ -22,8 +22,10 @@ export default class API {
     static async generateCompletion(prompt: string, service: LLMService): Promise<CompletionResponse> {
         await API.serviceMan.ensureServiceRunning(service);
         const response = await API.makeRequest(service, 'completion', {
-            prompt
+            prompt,
+            temperature: 0.2
         } as CompletionInput);
+        Logger.debug(JSON.stringify(response));
         return response as CompletionResponse;
     }
 
@@ -44,6 +46,7 @@ export default class API {
             throw new Error('Request failed');
         }
 
+        Logger.debug(`Request to ${url} complete`);
         return await res.json();
     }
 
