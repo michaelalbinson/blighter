@@ -15,7 +15,7 @@ export default function setupLLMRoutes(app: Express) {
             const prompt = (req.body as {prompt: string}).prompt;
 
             // sometimes the first response from the llm comes back empty, so try again if that happens
-            let response: string = '';
+            let response = '';
             let retries = 0;
             do {
                 try {
@@ -24,12 +24,11 @@ export default function setupLLMRoutes(app: Express) {
                     Logger.error('LLM request failed, retrying...');
                     Logger.error(e);
                     // wait a bit before retrying
-                    await (() => new Promise(resolve => setTimeout(resolve, 300)))();
+                    await WebUtils.sleep(300);
                     retries++;
                 }
             } while(response === '' || retries > 5);
 
-            console.log(`RESPONSE '${response}'`);
             res.status(200).send(response);
         });
     });

@@ -51,4 +51,9 @@ export default class WebUtils {
     static sendPublicFile(res: Response, fileName: string): void {
         res.status(200).sendFile(join(process.cwd(), 'public', fileName));
     }
+
+    static async sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
 }
