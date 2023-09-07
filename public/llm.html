@@ -8,6 +8,25 @@
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/footer.css" />
+    <style>
+        #text-box {
+            position: relative;
+            margin: 1rem;
+        }
+
+        textarea {
+            width: 90%;
+            max-width: calc(90% - 3rem);
+            resize: none;
+        }
+
+        #text-box button {
+            position: absolute;
+            right: 0;
+            width: 8%;
+            min-width: 3rem;
+        }
+    </style>
     <script src="js/CachedSettings.js"></script>
     <script src="js/ReloadableTableView.js"></script>
     <script src="js/utils.js"></script>
@@ -33,8 +52,10 @@
             <li>User: Good morning!</li>
             <li>Assistant: Good morning! How may I help you today?</li>
         </ul>
-        <input type="text" id="user-input" />
-        <button type="button" id="send-message">Send</button>
+        <div id="text-box">
+            <textarea id="user-input"></textarea>
+            <button type="button" id="send-message">Send</button>
+        </div>
     </div>
 </main>
 <footer>

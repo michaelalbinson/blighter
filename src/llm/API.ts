@@ -23,7 +23,8 @@ export default class API {
         await API.serviceMan.ensureServiceRunning(service);
         const response = await API.makeRequest(service, 'completion', {
             prompt,
-            temperature: 0.2
+            temperature: 0.2,
+            stop: ['User']
         } as CompletionInput);
         Logger.debug(JSON.stringify(response));
         return response as CompletionResponse;

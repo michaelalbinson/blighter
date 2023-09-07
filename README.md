@@ -22,6 +22,9 @@ the express app are pretty straight-forward.
 
 - Find more blogs that may be of interest [here](https://github.com/praharshjain/engineering-blogs)
 - [Getting RSS feeds from medium](https://help.medium.com/hc/en-us/articles/214874118-Using-RSS-feeds-of-profiles-publications-and-topics)
+- LLAMA 2 models:
+  - [LLAMA_2_CHAT](https://huggingface.co/TheBloke/Llama-2-7b-Chat-GGUF/blob/main/llama-2-7b-chat.Q5_K_M.gguf)
+  - [LLAMA_2_CODE](https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF)
 
 
 ### TODOS:

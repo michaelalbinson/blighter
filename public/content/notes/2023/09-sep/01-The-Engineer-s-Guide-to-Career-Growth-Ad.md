@@ -1,0 +1,68 @@
+-----------------------
+articleLink: https://review.firstround.com/the-engineers-guide-to-career-growth-advice-from-my-time-at-stripe-and-facebook
+articleTitle: The Engineer’s Guide to Career Growth — Advice from My Time at Stripe and Facebook | First Round Review
+createdOn: 2023-09-07T03:31:50.927Z
+updatedOn: 2023-09-07T03:31:50.927Z
+-----------------------
+
+- takeaways:
+  - Personal growth is compounded by company growth
+- 3 important lessons:
+  - strive to be the most valuable, but least critical.
+    - The best engineers and managers are great at adding value, getting the most out of the people around them, and helping the team see around corners even when they’re not there
+  - establish an emotional equilibrium to be successful as a manager
+    - forcing engineers to move into management is a mistake
+    - progress and feelings are no longer tightly correlated as a manager
+  - focus on growth and learning at every step — not on climbing the ladder as quickly as possible 
+    - too many believe that it’s a binary choice between IC and mananger, that you’re locked into a path once you’ve started on it. In reality, the skills required to succeed are more connected than you think 
+    - focus on learning instead of worrying about tracks and career ladders - that way, no matter what path you take you’ll only get better over time
+- advice for early ICs
+  - don't skipping engineering fundamentals to pivot into other roles prematurely
+  - don't move on from a team or company too quickly
+  - don;t chase the latest trend
+  - ask these questions:
+    - How can I make every code change a great one?
+    - How can I be as good at [X] as [this person] on my team?
+      - mentors come in all shapes and sizes
+- tech leads, soak up all you can to build a strong foundation regardless of your future path
+  - Do I deeply understand the systems I work on, and how they can break or be improved?
+  - How do I know we are working on the right things?
+  - How can I build better people leadership skills? 
+- senior ICs, double check to make sure you aren’t getting trapped
+  - as the years go by, check in to make sure you’re still growing and learning
+  - questions
+    - How do I keep learning and stay challenged?
+    - How do I continue to show value when I’m starting over in a new area?
+      - if you’ve become an expert in one area you’re likely capable of doing it again and you’ll be able to go deeper faster next time using the skills you bring with you
+    - How can I transfer knowledge to the people around me and lay out a strategy for future generations?
+  - if you find yourself explaining something to one person at a time, find a better way to do it. 
+    - Develop documentation, training programs, or reusable components and infrastructure to pass knowledge on at scale
+- eng moving to management - how to better support his team
+  - easy mistake to make is to try and work around this by clinging on to your coding time
+  - make peace with the shift
+  - questions
+    - How healthy is my team? How high-quality and high-impact is our work?
+    - How well can my team operate without me?
+- managers, don't default to adding more engineers
+  - adding more headcount isn’t always the cure
+    - it often creates more problems than it solves
+  - questions
+    - Why does my team exist, and why does what we work on matter?
+    - How can I help my teammates grow, across all experience levels and scenarios?
+- advice for leading organizations
+  - many leaders convince the reluctant to become or stay managers, drafting them into duty
+    - keeping unwilling managers in roles for too long is a costly mistake
+  - questions
+    - What unites your teams and why are you supporting them together?
+    - Are your teams as healthy as they can be? Are they even the right teams?
+      - axes of analysis: people, progress and goals, progress
+    - Am I spending time with my teams in the right way?
+      - don’t let gathering information take you too deeply into the weeds
+- takeaways
+  - Strive to be the most valuable, but least critical. Think about how long you could be away from your team and how far off course they would get. Do everything you can to close that gap.
+  - Focus on growth and learning at every step — not on climbing the ladder as quickly as possible. Don’t move on from a role too quickly, and try not to get caught up in chasing the latest trends.
+  - The best engineers can toggle back and forth between manager and IC roles. Make sure your technical foundation and fundamental skills are solid enough to pull that off.
+  - Do your homework before signing on to become a manager, and try your best to prepare for the emotional ups and downs coming your way.
+  - If you’re a new manager, focus on the health and impact of your team, not on how much code you’re personally shipping.
+  - Before you request additional headcount, drill down into why your team exists and how you can help every engineer level up.
+  - Don’t lose the forest for the trees when you’re leading a large org. Dig in enough to understand what’s going on, but focus your contributions on where they’ll matter most.

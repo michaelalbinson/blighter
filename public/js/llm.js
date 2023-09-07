@@ -8,6 +8,9 @@ window.onload = async () => {
 
     const generateText = async function() {
         const prompt = userInput.value;
+        userInput.setAttribute('disabled', 'disabled');
+        sendButton.setAttribute('disabled', 'disabled');
+        userInput.value = '';
 
         messages.appendChild(getLi('User: ' + prompt));
 
@@ -22,12 +25,14 @@ window.onload = async () => {
 
         // Once the request is complete, parse the response and display the generated text.
         const generatedLine = await response.text();
-        messages.appendChild(getLi('Assistant: ' + generatedLine));
+        messages.appendChild(getLi('Assistant: ' + generatedLine.trim()));
+        userInput.removeAttribute('disabled');
+        sendButton.removeAttribute('disabled');
     };
 
     function getLi(text) {
         const chatMessage = document.createElement('li');
-        chatMessage.textContent = text;
+        chatMessage.innerText = text;
         return chatMessage;
     }
 

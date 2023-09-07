@@ -6,13 +6,13 @@ import ServiceStatus from "./types/ServiceStatus";
 const ServiceHandles = {
     CODE_LLAMA: {
         contextLength: 2048,
-        llmFile: 'vicuna-7b-v1.3.ggmlv3.q4_1.bin', // TODO REPLACE
+        llmFile: 'codellama-7b-instruct.Q5_K_M.gguf', // TODO REPLACE
         port: 8091,
         humanName: 'Code LLAMA (v2)'
     } as LLMService,
     LLAMA: {
         contextLength: 2048,
-        llmFile: 'vicuna-7b-v1.3.ggmlv3.q4_1.bin', // TODO REPLACE
+        llmFile: 'llama-2-7b-chat.Q5_K_M.gguf', // TODO REPLACE
         port: 8092,
         humanName: 'LLAMA Chat (v2)'
     } as LLMService
