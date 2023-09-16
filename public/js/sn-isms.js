@@ -20,7 +20,7 @@ window.onload = async () => {
 
 	const filterFn = (item, searchTerm) => {
 		if (!item.__searchDefCache)
-			item.__searchCache = item.def instanceof Array ? item.def.join(' ') : item.def;
+			item.__searchDefCache = item.def instanceof Array ? item.def.join(' ') : item.def;
 
 		return (item.abbr + ' ' + item.__searchDefCache).toLowerCase().includes(searchTerm.toLowerCase());
 	}
