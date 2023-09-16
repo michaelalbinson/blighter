@@ -40,7 +40,7 @@ class ReloadableListView {
             this.listTarget.removeChild(this._currentListElement);
 
         let newList = document.createElement('ul');
-        if (this._filteredItemList.length > 0 && this._filteredItemList[0].id) {
+        if (this._filteredItemList.length > 0 && this._filteredItemList[0]) {
             const elsToRender = this._filteredItemList.slice(this._currentStartIndex, this._currentStartIndex + this._pageSize);
             for (let el of elsToRender) {
                 const li = this._getListCellFn(el, this._renderList.bind(this));
