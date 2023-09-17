@@ -24,6 +24,28 @@ window.onload = async () => {
     noteHeader.innerHTML = `Notes for: <a href="${respJson.link}" target="_blank">${respJson.title}</a>`;
     document.getElementById('itemId').value = urlParams.itemId;
 
+    const readButton = document.getElementById('mark-read');
+    readButton.innerText = respJson.read ? 'Mark unread' : 'Mark read';
+    readButton.addEventListener('click', async () => {
+        respJson.read = !respJson.read;
+        const res = await fetch('/item/mark-read', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ itemId: urlParams.itemId, read: respJson.read })
+        });
+
+        if (!res.ok) {
+            console.error('Failed to mark item read');
+            return;
+        }
+
+        readButton.innerText = respJson.read ? 'Mark unread' : 'Mark read';
+    });
+
     const noteInput = document.getElementById('note');
     new LightweightMarkdownTextarea(noteInput).attach();
+    window.top.__item = respJson;
 };
