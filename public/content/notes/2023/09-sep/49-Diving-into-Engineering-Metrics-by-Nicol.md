@@ -1,0 +1,53 @@
+-----------------------
+articleLink: https://hybridhacker.email/p/diving-into-engineering-metrics
+articleTitle: Diving into Engineering Metrics - by Nicola Ballotta
+createdOn: 2023-09-22T15:05:24.345Z
+updatedOn: 2023-09-22T15:05:24.345Z
+-----------------------
+
+- What are Engineering Metrics
+  - quality
+  - efficiency
+  - operational efficiency
+  - collaboration/team dynamics
+  - reliability
+  - technical health
+  - product performance
+  - dev experience
+- Purpose of eng metrics
+  - understand team performance
+  - improve over time
+  - support decision making
+  - align with business goals
+  - set and track goals
+  - communicate progress
+  - boost morale
+  - optimize resources
+  - ensure quality
+- historic eng metrics + productivity
+  - OG (50's): SLOC (source lines of code)
+  - early 90's: velocity - amount of work delivered
+  - late 90's: cycle time
+  - 2014-2022: DORA (DevOps Research and Assessment)
+    - Lead time for changes
+    - deployment frequency
+    - change failure rate
+    - mean time to recovery
+  - 2021: SPACE
+    - (developer) satisfaction
+    - performance
+    - activity
+    - communication/collaboration
+    - efficiency and flow
+  - 2023: DevEx
+    - flow state
+    - feedback loops
+    - cognitive load
+- Making the most of engineering metrics
+  - stick with system metrics: e.g. latency/downtime/response time
+  - team metrics are better than individual metrics
+  - don't use metrics to blame people
+  - regularly review and adjust
+  - educate your team
+  - keep it simple
+- and remember: metrics aren't everything
