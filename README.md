@@ -25,29 +25,33 @@ the express app are pretty straight-forward.
 - LLAMA 2 models:
   - [LLAMA_2_CHAT](https://huggingface.co/TheBloke/Llama-2-7b-Chat-GGUF/blob/main/llama-2-7b-chat.Q5_K_M.gguf)
   - [LLAMA_2_CODE](https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF)
+- sqlite vector db plugin - https://github.com/asg017/sqlite-vss
 
 
 ### TODOS:
-- [X] Search (simple)
 - [ ] Search (LLM-enabled)
 - [ ] Delete unwanted feed + relevant items
+- [ ] note-related
+  - [x] pure note view
+  - [ ] add notes that are not associated to an article
+    - [ ] Add support for custom note titles, tagging
+    - [ ] Note "workspaces" that write to separate dirs
+  - [ ] allow adding a header preamble ("note context") to the notes
+- [ ] Grouping + tagging feeds by larger topics (e.g. engineering, general tech)
+  - I think I even would go so far as to have this be a "project/theme-centric" construct so that you have a landing page
+    of projects with related notes/articles... this is getting a bit trickier to implement from where this project started
+- [ ] Hardening + resiliency (prevent errors from crashing the app)
+
+
+### Done
+- [X] Search (simple)
 - [x] Filters
   - [x] Read
   - [x] Unread
   - [x] All
 - [X] Fix refresh button
-- [ ] Grouping + tagging feeds by larger topics (e.g. engineering, general tech)
-  - I think I even would go so far as to have this be a "project/theme-centric" construct so that you have a landing page
-  of projects with related notes/articles... this is getting a bit trickier to implement from where this project started
-- [ ] Hardening + resiliency (prevent errors from crashing the app)
 - [X] Pagination/reducing endless-scroll stress on main page
 - [X] Save article
 - [X] Add notes for article
 - [X] Mark articles read/unread
   - [X] Automatically mark article read when clicked
-- [ ] pure note view
-  - [ ] add notes that are not associated to an article
-    - [ ] Add support for custom note titles, tagging
-    - [ ] Note "workspaces" that write to separate dirs 
-  - [ ] allow adding a header preamble ("note context") to the notes
-  - 
