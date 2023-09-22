@@ -21,14 +21,13 @@
             <ul role="menu">
                 <li role="menuitem"><a href="/add-feed-item">Add Item</a></li>
                 <li role="menuitem"><a href="/add-feed.html">Add Feed</a></li>
-                <li role="menuitem"><a href="/manage">Manage</a></li>
-                <li role="menuitem"><a href="/settings">Settings</a></li>
             </ul>
         </header>
         <main>
             <h2>Home</h2>
 
             <div id="leading-button-group" class="leading-button-group">
+                <a href="/add-feed-item" title="Add feed item">+</a>
                 <form method="post" action="/fetch-feeds">
                     <button type="submit" title="Refresh feeds">⇲</button>
                 </form>
@@ -36,11 +35,24 @@
             <div id="list"></div>
         </main>
         <footer>
-            <ul>
-                <li><a href="/manage">Manage Feeds</a></li>
-                <li><a href="/add-feed.html">Add Feed</a></li>
-                <li><a href="/settings">Settings</a></li>
-            </ul>
+            <div>
+                <h1>Feed Things</h1>
+                <ul>
+                    <li><a href="/">My Feed</a></li>
+                    <li><a href="/add-feed-item">Add Feed Item</a></li>
+                    <li><a href="/add-feed.html">Add Feed</a></li>
+                    <li><a href="/manage">Manage Feeds</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h1>Utilities</h1>
+                <ul>
+                    <li><a href="/llm">LLM</a></li>
+                    <li><a href="/sn-isms.html">SN-isms</a></li>
+                    <li><a href="/settings">Settings</a></li>
+                </ul>
+            </div>
         </footer>
     </body>
 </html>

@@ -1,6 +1,7 @@
 footer {
     border-top: solid 1px var(--theme-1);
-    text-align: center;
+    text-align: left;
+    padding-left: 1rem;
 }
 
 footer ul {
@@ -13,10 +14,15 @@ footer ul li::marker {
 }
 
 footer ul li {
-    margin: 0.5rem 0;
+    margin: 0 1rem;
 }
 
-footer .menus {
+footer div {
     display: inline-block;
-    margin-top: 1rem;
+}
+
+footer h1 {
+    font-size: 1rem;
+    margin-bottom: 0;
+    color: var(--text-color);
 }

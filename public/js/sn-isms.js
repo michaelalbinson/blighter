@@ -12,9 +12,16 @@ window.onload = async () => {
 		const def = document.createElement('p');
 		def.innerHTML = item.def instanceof Array ? item.def.join('<br/><br/>') : item.def;
 
+		const sp = getSpan('');
+		const link = document.createElement('a');
+		link.href = `/add-sn-ism.html?abbr=${item.abbr}`;
+		link.innerText = 'Edit';
+		sp.appendChild(link);
+
 		const li = document.createElement('li');
 		li.appendChild(abbr);
 		li.appendChild(def);
+		li.appendChild(sp);
 		return li;
 	};
 
