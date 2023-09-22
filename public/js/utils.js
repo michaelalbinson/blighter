@@ -51,3 +51,21 @@ function checkbox(text, clickFn) {
     container.appendChild(input);
     return container;
 }
+
+function htmlBR() {
+    return document.createElement('br');
+}
+
+function createElement(elName, attributes= {}) {
+    const el = document.createElement(elName);
+    for (let attrName in attributes)
+        el.setAttribute(attrName, attributes[attrName]);
+
+    if (attributes.text || attributes.innerText)
+        el.innerText = attributes.text || attributes.innerText;
+
+    if (attributes.value)
+        el.value = attributes.value;
+
+    return el;
+}
