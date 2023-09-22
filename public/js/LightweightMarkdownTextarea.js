@@ -26,7 +26,7 @@ class LightweightMarkdownTextarea {
                 this._matchCharacterWith('_');
                 break;
             case '`':
-                this._matchCharacterWith('_');
+                this._matchCharacterWith('`');
                 break;
         }
     }
