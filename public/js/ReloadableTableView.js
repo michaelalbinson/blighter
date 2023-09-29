@@ -1,10 +1,27 @@
 'use strict';
 
+const defaultOptions = {
+    renderQuickFilters: true
+}
+
 class ReloadableListView {
-    constructor(listRootID, pageSize, getItemsFn, getListCellFn, filterFn) {
+    /**
+     *
+     * @param listRootID {string}
+     * @param pageSize {number}
+     * @param getItemsFn {function}
+     * @param getListCellFn {function}
+     * @param filterFn {function}
+     * @param options {{renderQuickFilters: boolean}}
+     */
+    constructor(listRootID, pageSize, getItemsFn, getListCellFn, filterFn, options = defaultOptions) {
         this.listRoot = document.getElementById(listRootID);
+        this._options = options;
+
         this._renderSearchInput();
-        this._renderQuickFilters();
+        if (options.renderQuickFilters)
+            this._renderQuickFilters();
+
         this._renderListTarget();
         this._renderPaginationButtons();
 

@@ -36,19 +36,16 @@ window.onload = async () => {
     }
 
     const buildListItem = (item, reloadList) => {
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.target = '_blank';
-        link.innerText = item.title;
+        const link = createElement('a', {
+            href: item.link,
+            target: '_blank',
+            innerText: item.title
+        });
         const span = getSpan(new Date(item.pubDate).toString() + " - ");
-        const a2 = document.createElement('a');
-        if (item.feed) {
-            a2.innerText = item.feed.name;
-            a2.href = `/single-feed?id=${item.feed.id}`;
-        } else {
-            a2.innerText = item.domain;
-            a2.href = item.link;
-        }
+        const a2 = createElement('a', {
+            innerText: item.feed ? item.feed.name : item.domain,
+            href: item.feed ? `/single-feed?id=${item.feed.id}` : item.link
+        });
         span.appendChild(a2);
 
         const span2 = getSpan('');

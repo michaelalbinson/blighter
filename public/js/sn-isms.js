@@ -32,6 +32,8 @@ window.onload = async () => {
 		return (item.abbr + ' ' + item.__searchDefCache).toLowerCase().includes(searchTerm.toLowerCase());
 	}
 
-	const rlv = new ReloadableListView('list', 10000000, getData, buildListItem, filterFn);
+	const rlv = new ReloadableListView('list', 10000000, getData, buildListItem, filterFn, {
+		renderQuickFilters: false
+	});
 	await rlv.render();
 }
