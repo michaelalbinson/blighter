@@ -1,7 +1,8 @@
 'use strict';
 
 const defaultOptions = {
-    renderQuickFilters: true
+    renderQuickFilters: true,
+    defaultUnreadFilter: false
 }
 
 class ReloadableListView {
@@ -12,7 +13,7 @@ class ReloadableListView {
      * @param getItemsFn {function}
      * @param getListCellFn {function}
      * @param filterFn {function}
-     * @param options {{renderQuickFilters: boolean}}
+     * @param options {{renderQuickFilters: boolean, defaultUnreadFilter: boolean}}
      */
     constructor(listRootID, pageSize, getItemsFn, getListCellFn, filterFn, options = defaultOptions) {
         this.listRoot = document.getElementById(listRootID);
@@ -83,6 +84,8 @@ class ReloadableListView {
             await this._loadList();
 
         this._renderList(runFilters);
+        if (this._options.defaultUnreadFilter)
+            this._unreadButton.querySelector('input').click();
     }
 
     _renderPaginationButtons() {
@@ -210,6 +213,7 @@ class ReloadableListView {
         const saved = checkbox('Saved', (checkbox) => { clickHandler(checkbox, 'saved'); });
 
         div.appendChild(unread);
+        this._unreadButton = unread;
         div.appendChild(read);
         div.appendChild(annotated);
         div.appendChild(saved);

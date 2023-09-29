@@ -128,6 +128,9 @@ window.onload = async () => {
     }
 
     const PAGE_SIZE = window.blighterClientSettings.get('pageSize');
-    const rlv = new ReloadableListView('list', PAGE_SIZE, getData, buildListItem, filterFn);
+    const rlv = new ReloadableListView('list', PAGE_SIZE, getData, buildListItem, filterFn, {
+        defaultUnreadFilter: true,
+        renderQuickFilters: true
+    });
     await rlv.render();
 }
