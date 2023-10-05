@@ -28,6 +28,18 @@ export default class WebUtils {
         return item;
     };
 
+    static async resolveItemByUrl(itemUrl: string): Promise<FeedItem | ReadingListItem> {
+        let item: FeedItem|ReadingListItem;
+        item = await ReadingListItemDB.getByUrl(itemUrl);
+        if (!item)
+            item = await FeedItemDB.getByUrl(itemUrl);
+
+        if (!item)
+            throw new Error(`Unable to find item for url ${itemUrl}`);
+
+        return item;
+    };
+
     static async defaultReqHandling(req: Request, res: Response, action: () => Promise<void|any>) {
         Logger.debug(`${req.method} request received to: ${req.url}`);
         try {

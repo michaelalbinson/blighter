@@ -17,6 +17,12 @@ export default class FeedItemDB extends DBObject {
         return FeedItemDB.rows2Objects(await this._getAll());
     }
 
+    static async getByUrl(link: string): Promise<FeedItem> {
+        return this.rows2Objects(
+            await DBManager.fetch(`SELECT * FROM ${this.tableName()} WHERE link=?`, [link])
+        )[0];
+    }
+
     static async getUnread(): Promise<FeedItem[]> {
         return FeedItemDB.rows2Objects(
             await DBManager.query(`SELECT * FROM feed_item WHERE read = false;`)

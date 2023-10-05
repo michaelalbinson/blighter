@@ -25,4 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /dist/**/*.js
+/dist/**/*.js.map
 *.db

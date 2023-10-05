@@ -26,16 +26,30 @@ export default function setupNoteRoutes(app: Express) {
     app.get('/note', async(req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
             const itemId = req.query['itemId'] as string;
-            if (!itemId)
+            const id = req.query['id'] as string;
+            if (!itemId && !id)
                 return res.status(400).send();
 
-            const item = await WebUtils.resolveItem(itemId);
-            if (await NoteDB.existsForUrl(item.link)) {
-                const dbNote = await NoteDB.getByArticleUrl(item.link);
+            if (id) {
+                const dbNote = await NoteDB.getById(Number(id));
+                if (!dbNote)
+                    return res.status(404).send();
+
                 const note = await NoteFS.read(dbNote.url);
-                res.status(200).send(note);
-            } else
-                res.status(404).send();
+                const item = await WebUtils.resolveItemByUrl(note.articleLink);
+                res.status(200).send({
+                    note,
+                    item
+                });
+            } else {
+                const item = await WebUtils.resolveItem(itemId);
+                if (await NoteDB.existsForUrl(item.link)) {
+                    const dbNote = await NoteDB.getByArticleUrl(item.link);
+                    const note = await NoteFS.read(dbNote.url);
+                    res.status(200).send(note);
+                } else
+                    res.status(404).send();
+            }
         });
     });
 
@@ -58,6 +72,18 @@ export default function setupNoteRoutes(app: Express) {
             }
 
             res.redirect('back');
+        });
+    });
+
+    app.get('/notes', async (req, res) => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
+            WebUtils.sendPublicFile(res, 'notes.html');
+        });
+    });
+
+    app.get('/notes.db', async (req, res) => {
+        await WebUtils.defaultReqHandling(req, res, async () => {
+            res.status(200).send(await NoteDB.getAll());
         });
     });
 }
