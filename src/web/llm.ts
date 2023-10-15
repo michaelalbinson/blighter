@@ -27,7 +27,7 @@ export default function setupLLMRoutes(app: Express) {
                     await WebUtils.sleep(300);
                     retries++;
                 }
-            } while(response === '' || retries > 5);
+            } while(response === '' && retries < 5);
 
             res.status(200).send(response);
         });
