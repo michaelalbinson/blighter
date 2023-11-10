@@ -6,6 +6,7 @@ import RSSFeedDB from "../../rss/RSSFeedDB";
 import Logger from "../../Logger";
 import NoteDB from "./NoteDB";
 import ReadingListItemDB from "../../reading_list/ReadingListItemDB";
+import ChatPresetsDB from "../../llm/ChatPresetsDB";
 import {join} from "path";
 
 class DBManager {
@@ -86,7 +87,8 @@ class DBManager {
             RSSFeedDB.tableSQL(),
             FeedItemDB.tableSQL(),
             NoteDB.tableSQL(),
-            ReadingListItemDB.tableSQL()
+            ReadingListItemDB.tableSQL(),
+            ChatPresetsDB.tableSQL()
         ].map(async (sql) => {
             await db.run(sql, null);
         });

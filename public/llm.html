@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/llm.css" />
     <style>
         #text-box {
             position: relative;
@@ -42,10 +43,15 @@
 <main>
     <h2>LLM Chat</h2>
 
+    <div>
+        <label for="chat-preset">Using Preset:</label> <a href="/manage-presets">(Manage)</a>
+        <select id="chat-preset">
+        </select>
+    </div>
+
     <div id="chat-container">
         <ul id="chat-messages">
-            <li>User: Good morning!</li>
-            <li>Assistant: Good morning! How may I help you today?</li>
+
         </ul>
         <div id="text-box">
             <textarea id="user-input"></textarea>

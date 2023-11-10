@@ -1,0 +1,19 @@
+main ul ul li::marker {
+    content: initial;
+}
+
+main ul ul {
+    content: initial;
+}
+
+main ul ul li {
+    padding-bottom: initial;
+    margin-bottom: initial;
+    border-bottom: initial;
+}
+
+main ul ul li:first-of-type {
+    border-top: initial;
+    margin-top: initial;
+    padding-top: initial;
+}
