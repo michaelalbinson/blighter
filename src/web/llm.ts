@@ -74,7 +74,7 @@ export default function setupLLMRoutes(app: Express) {
 
             await ChatPresetsDB.delete(presetId);
             res.status(200).send();
-        })
+        });
     });
 
     app.get('/manage-presets', (req, res) => {

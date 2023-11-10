@@ -9,25 +9,6 @@
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/footer.css" />
     <link rel="stylesheet" href="css/llm.css" />
-    <style>
-        #text-box {
-            position: relative;
-            margin: 1rem;
-        }
-
-        textarea {
-            width: 90%;
-            max-width: calc(90% - 3rem);
-            resize: none;
-        }
-
-        #text-box button {
-            position: absolute;
-            right: 0;
-            width: 8%;
-            min-width: 3rem;
-        }
-    </style>
     <script src="js/showdown.min.js"></script>
     <script src="js/CachedSettings.js"></script>
     <script src="js/ReloadableTableView.js"></script>
@@ -44,9 +25,11 @@
     <h2>LLM Chat</h2>
 
     <div>
-        <label for="chat-preset">Using Preset:</label> <a href="/manage-presets">(Manage)</a>
+        <label for="chat-preset">Preset:</label>
         <select id="chat-preset">
         </select>
+        <a href="/manage-presets">Manage</a>
+        <a href="/llm" title="Clear">🚫</a>
     </div>
 
     <div id="chat-container">
