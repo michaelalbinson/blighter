@@ -138,11 +138,16 @@ export default class RSSManager {
                 }
             } else {
                 Logger.info(`Processing Atom feed for url ${feed.url}`);
-                for (const item of feed.data.entry) {
-                    if (!feed.feedItems)
-                        continue;
+                try {
+                    for (const item of feed.data.entry) {
+                        if (!feed.feedItems)
+                            continue;
 
-                    feed.feedItems.push(this.getAtomFeedItem(item, feed));
+                        feed.feedItems.push(this.getAtomFeedItem(item, feed));
+                    }
+                } catch (e) {
+                    Logger.error(e);
+                    Logger.info(`Failed to iterate over entry collection ${feed.data.entry}`);
                 }
             }
 
