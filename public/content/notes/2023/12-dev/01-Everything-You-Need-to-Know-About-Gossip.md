@@ -1,0 +1,64 @@
+-----------------------
+articleLink: https://newsletter.systemdesign.one/p/gossiping-protocol
+articleTitle: Everything You Need to Know About Gossip Protocol
+createdOn: 2023-12-08T00:04:01.484Z
+updatedOn: 2023-12-08T00:04:01.484Z
+-----------------------
+
+- 2 main problems in distributed systems
+  - state management
+  - communication of state
+- gossip protocol can solve both (aka epidemic protocol)
+- how to broadcast messages in distributed systems
+  - point-to-point broadcast
+    - producer sends message directly to the consumer
+    - message is lost if both the producer and consumer fail simultaneously
+  - eager reliable broadcast
+    - every server broadcases to every other server in the system
+    - it's fault tolerant, but problematic because of
+      - high bandwidth usage (O(n^2) messages to transmit)
+      - network bottleneck due to O(n) linear broadcast
+      - extra storage needed to maintain the list of all nodes
+  - gossip protocol
+    - servers periodically send messages to a set of random servers
+      - eventually everyone in the system has the message
+    - good choice for comms in a large system because:
+      - each server transfers a limited number of messages
+      - limited bandwidth usage
+      - tolerant to network and server failures
+    - fault tolerant if servers retry failed messages
+    - only works if
+      - operations are commutative
+      - serializability isn't needde
+    - fanout: # of servers to get a message from a particular server
+    - cycle: number of gossip rounds to transmit a message across the whole system
+- gossip protocol properties
+  - peer servers must be selected at random
+  - each server stores only location information
+  - interations between servers are periodic and pairwise
+- gossip algorithm
+  - Gossip periodically to a random server
+  - The server inspects the received gossip message
+  - The server merges the message with the highest version to local data
+- implementation
+  - initial each server with a partial view of the system
+  - merge the server's view with a peer server's view on the gossip exchange
+- types of gossip protocol
+  - anti-entropy: send unbounded number of messages with full data
+    - causes high bandwidth usage
+  - rumor-mongering
+    - more frequent cycles of only the latest information
+  - aggregation
+    - creates a system wide value by sampling data across servers and combining them
+- how gossip protocol spreads messages
+  - push only: 1->many (efficient during system initialization)
+  - pull only: many->one (efficient at steady state with many active servers)
+  - push-pull
+- advantages
+  - fault tolerant
+  - scalable
+  - decentralized
+- disadvantages
+  - eventually consistent
+  - difficult to debug/test
+  - high bandwidth usage
