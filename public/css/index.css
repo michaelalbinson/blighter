@@ -211,3 +211,36 @@ span.checkbox-button input[type='checkbox'] {
     opacity: 0;
     cursor: pointer;
 }
+
+span.activity-item-desc {
+    display: inline-block;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+span.activity-item-priority {
+    display: inline-block;
+    background-color: var(--theme-1);
+    color: black;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+span.activity-item-priority-0 {
+    background-color: violet;
+}
+
+span.activity-item-priority-1 {
+    background-color: blue;
+    color: white;
+}
+
+span.activity-item-priority-2 {
+    background-color: red;
+}
+
+span.activity-item-priority-3 {
+    background-color: yellow;
+}

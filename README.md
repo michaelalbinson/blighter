@@ -40,6 +40,9 @@ the express app are pretty straight-forward.
 - [ ] Grouping + tagging feeds by larger topics (e.g. engineering, general tech)
   - I think I even would go so far as to have this be a "project/theme-centric" construct so that you have a landing page
     of projects with related notes/articles... this is getting a bit trickier to implement from where this project started
+- [ ] Activity related
+  - [ ] Generate markdown of completed activities per-month
+  - [ ] Render markdown in activity descriptions on site
 - [ ] Hardening + resiliency (prevent errors from crashing the app)
 
 
@@ -55,3 +58,8 @@ the express app are pretty straight-forward.
 - [X] Add notes for article
 - [X] Mark articles read/unread
   - [X] Automatically mark article read when clicked
+- [X] Add an activity tracker
+  - [X] CRUD for activity tracker
+  - [X] defer/complete activities
+  - [X] prioritize activities
+  - [X] view all activities

@@ -8,6 +8,7 @@ import NoteDB from "./NoteDB";
 import ReadingListItemDB from "../../reading_list/ReadingListItemDB";
 import ChatPresetsDB from "../../llm/ChatPresetsDB";
 import {join} from "path";
+import ActivityItemDB from "../../activity/ActivityItemDB";
 
 class DBManager {
     private readonly db: Database;
@@ -22,7 +23,7 @@ class DBManager {
     }
 
     async fetch(sql: string, params: any[]|null): Promise<any[]> {
-        return new Promise((resolve, reject) => {
+        return new Promise<any[]>((resolve, reject) => {
             const handleResponse = (err: Error|null, rows: any[]) => {
                 if (err) {
                     Logger.debug(err);
@@ -44,7 +45,7 @@ class DBManager {
         if (!params)
             params = [];
 
-        return new Promise((resolve, reject) => {
+        return new Promise<any[]>((resolve, reject) => {
             const handleResponse = (err: Error|null, rows: any[]) => {
                 if (err) {
                     Logger.debug(err);
@@ -63,7 +64,7 @@ class DBManager {
     }
 
     async run(sql: string, params: any[]|null): Promise<RunResult> {
-        return new Promise((resolve, reject) => {
+        return new Promise<RunResult>((resolve, reject) => {
             const handleResponse = (err: Error|null, res: RunResult) => {
                 if (err) {
                     Logger.debug(err);
@@ -88,7 +89,8 @@ class DBManager {
             FeedItemDB.tableSQL(),
             NoteDB.tableSQL(),
             ReadingListItemDB.tableSQL(),
-            ChatPresetsDB.tableSQL()
+            ChatPresetsDB.tableSQL(),
+            ActivityItemDB.tableSQL()
         ].map(async (sql) => {
             await db.run(sql, null);
         });

@@ -66,7 +66,7 @@ export default class NoteFS {
     }
 
     static async create(item: ReadingListItem|FeedItem, content: string): Promise<Note> {
-        const now = new Date().toISOString()
+        const now = new Date().toISOString();
         const note = {
             content,
             createdOn: now,

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Activity Tracker | Blighter</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/activity.css" />
+    <script src="/js/utils.js"></script>
+    <script src="/js/activity/util.js"></script>
+    <script src="/js/activity/tracker.js"></script>
+</head>
+<body>
+<header>
+    <a href="/">
+        <img src="/favicon.ico" alt="Blighter logo" />
+    </a>
+</header>
+<main>
+    <h2>Activity tracker</h2>
+    <h3>Current Activities</h3>
+    <div id="current-activities">
+        <ul></ul>
+    </div>
+    <div id="add-item" style="text-align: center">
+        <form action="/activity-item" method="POST">
+            <label for="description" style="display: none">Description</label>
+            <input name="description" id="description" type="text">
+            <label for="priority" style="display: none">Priority</label>
+            <select name="priority" id="priority">
+                <option value="0">P0</option>
+                <option value="1">P1</option>
+                <option value="2">P2</option>
+                <option value="3">P3</option>
+                <option value="4">P4</option>
+                <option value="5" selected>P5</option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+    <div>
+        <button type="button" class="collapsible">Deferred items</button>
+        <div class="collapsible-content" id="deferred-items"></div>
+    </div>
+</main>
+<footer>
+    <ul>
+        <li><a href="/manage">Manage Feeds</a></li>
+        <li><a href="/add-feed.html">Add Feed</a></li>
+        <li><a href="/add-feed-item">Add Feed Item</a></li>
+        <li><a href="/sn-isms.html">SN-isms</a></li>
+        <li><a href="/settings">Settings</a></li>
+    </ul>
+</footer>
+</body>
+</html>
