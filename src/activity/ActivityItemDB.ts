@@ -14,7 +14,9 @@ export default class ActivityItemDB extends DBObject {
     }
 
     static async getAll(): Promise<ActivityItem[]> {
-        return ActivityItemDB.rows2Objects(await this._getAll());
+        return ActivityItemDB.rows2Objects(
+            await DBManager.query(`SELECT * FROM ${this.tableName()} ORDER BY updated DESC;`)
+        );
     }
 
     static async getActive(): Promise<ActivityItem[]> {
@@ -31,7 +33,7 @@ export default class ActivityItemDB extends DBObject {
 
     static async getCompleted(): Promise<ActivityItem[]> {
         return ActivityItemDB.rows2Objects(
-            await DBManager.query(`SELECT * FROM ${this.tableName()} WHERE completed = true ORDER BY priority, updated;`)
+            await DBManager.query(`SELECT * FROM ${this.tableName()} WHERE completed = true ORDER BY updated;`)
         );
     }
 
