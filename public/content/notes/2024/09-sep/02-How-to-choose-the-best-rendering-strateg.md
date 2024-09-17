@@ -1,0 +1,71 @@
+-----------------------
+articleLink: https://vercel.com/blog/how-to-choose-the-best-rendering-strategy-for-your-app
+articleTitle: How to choose the best rendering strategy for your app – Vercel
+createdOn: 2024-09-11T19:43:17.431Z
+updatedOn: 2024-09-11T19:55:22.303Z
+-----------------------
+
+- rendering strategies
+  - pre-render everything (static rendering/static site generation)
+    - ideal use cases:
+      - infrequent changes
+      - site layouts
+      - perf-critical marketing pages
+      - documentation sites/sites that are quick to rebuild
+    - benefits
+      - fast loads
+      - good for SEO
+      - reduced server load
+      - low infra costs
+    - drawbacks
+      - increased build times
+      - content updates require rebuilds
+  - incremental static revaidation
+    - ideal use cases:
+      - when builds with static site generation are too long
+      - ecommerce product pages
+      - new websites
+      - large-scale content sites
+    - benefits
+      - fast loads once page is built + cached
+      - allows for on-demand content updates w/o full rebuild
+      - scales to large numbers of pages
+      - more cost-efficient than SSR
+    - drawbacks
+      - carefully manage cache invalidation strategy
+    - best practice
+      - favor on-demand vs time-based revalidation - timers make for bad cache flush indicators
+      - use static loading skeletons
+  - server-side rendering
+    - ideal for:
+      - when you are already revalidating ISR for most user requests (e.g. you need fresh data)
+      - personalized pagres (dashboards, social media feeds, real-time data visualization)
+    - benefits
+      - always-fresh data
+      - better for SEO and data load time
+    - drawbacks
+      - slower than SSG or ISR
+      - time to first byte can be lacking
+      - consumes more server resources
+  - client-side rendering
+    - ideal for:
+      - user interactins with elements on the page that need immediate feedback
+      - admin dashboards w/ real time data
+      - ongoing background tasks after initial load
+    - benefits
+      - highly interactive UX
+      - seamless transitions between app states
+      - real-time interactions with data
+    - drawbacks
+      - inital load can be slower due to large JS bundles
+      - optimizing core web vitals can be challenging
+      - requires careful client state management
+  - partial prerendering
+    - ideal for:
+      - instant page load
+      - seamless stream of dynamic data (augmented SSR)
+      - improved performance with less dev overhead
+    - considerations
+      - hard to opt in
+
+Has some interesting case studies of different types of apps
