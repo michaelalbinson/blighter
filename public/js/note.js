@@ -59,4 +59,13 @@ window.onload = async () => {
 
     new LightweightMarkdownTextarea(noteInput).attach();
     window.top.__item = itemData;
+
+    const originalContent = noteInput.value;
+    window.addEventListener('beforeunload', (e) => {
+        const currentContent = noteInput.value.trim();
+        if (currentContent && currentContent !== originalContent) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
 };
