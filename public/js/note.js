@@ -60,8 +60,18 @@ window.onload = async () => {
     new LightweightMarkdownTextarea(noteInput).attach();
     window.top.__item = itemData;
 
+    let isSubmitting = false;
+    const form = document.querySelector('form');
+    form.addEventListener('submit', () => {
+        isSubmitting = true;
+    });
+
     const originalContent = noteInput.value;
     window.addEventListener('beforeunload', (e) => {
+        if (isSubmitting) {
+            return;
+        }
+
         const currentContent = noteInput.value.trim();
         if (currentContent && currentContent !== originalContent) {
             e.preventDefault();
