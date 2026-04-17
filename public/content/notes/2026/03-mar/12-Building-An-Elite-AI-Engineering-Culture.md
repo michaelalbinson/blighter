@@ -1,0 +1,53 @@
+-----------------------
+articleLink: https://www.cjroth.com/blog/2026-02-18-building-an-elite-engineering-culture
+articleTitle: Building An Elite AI Engineering Culture In 2026 | Chris Roth
+createdOn: 2026-03-06T18:01:51.941Z
+updatedOn: 2026-03-06T18:15:22.689Z
+-----------------------
+
+- AI Is a Mirror, Not an Equalizer
+  - senior engineers realize nearly five times the productivity gains of junior engineers
+- the Companies Setting the Standard
+  - small senior teams with extreme ownership, writing-driven culture, zero tolerance for quality debt, AI used with rigor not recklessness, and the near-total dissolution of traditional handoffs between design and engineering
+- spec driven development + TDD
+- design engineering 
+  - In a world where software is growing exponentially, design is a differentiator.
+  - developers to develop real product sense
+  - ship MVQPs (Minimum Viable Quality Products) rather than bare MVPs 
+- stacked PRs
+  - maintain stacks of 5–10 PRs, each under ~200 lines, reviewed independently while dev continues to work
+- cycle time over story points
+  - industry starting to move away from agile
+  - AI changes the story point calculus unpredictably
+- product ownership
+  - everyone ships code, no QE, no PM
+  - one model: one product owner, one AI-proficient engineer, one systems architect
+  - The "I just write code" era is over
+- agents.md
+  - Auto-generated AGENTS.md files via /init commands "prioritize comprehensiveness over restraint" and should be manually edited down
+  - keeping CLAUDE.md under 300 lines
+  - recommended structure follows a WHAT/WHY/HOW framework:
+    - tech stack and project structure
+    - project purpose and what different parts do
+    - build commands and coding conventions
+    - Include concrete do/don't lists and explicit permission boundaries
+    - progressive disclosure for large projects: a brief root AGENTS.md with references to detailed docs in subdirectories
+    - Avoid:
+      - documenting file paths
+      - using the file as a linter (use actual linting tools)
+      - including task-specific instructions that rot quickly
+- Agent-friendly architecture
+  - organizing code by feature with each slice self-contained
+  - Single-language monorepos amplify this advantage
+  - TypeScript-everywhere stacks and tools have become the default for AI-native teams
+  - explicit over implicit everywhere (explicit types, explicit error handling, explicit interfaces)
+- writing culture
+  - best engineering cultures are writing cultures 
+  - In an AI-augmented world, the returns on writing multiply
+- rethink best practices
+  - DRY needs recalibration -> duplicate consciously, with visibility
+    - distinguishing code duplication (sometimes acceptable) from knowledge duplication (still problematic).
+  - Not all code deserves equal rigor
+    - software is bifurcating into disposable code (experiments, prototypes, data scripts) and durable code (financial transactions, medical systems, infrastructure)
+    - rigor should match code's expected lifespan
+- formula: taste (knowing what to build, what quality looks like, when to say no) x discipline (specs before prompts, tests before shipping, reviews before merging) x leverage (small teams with powerful tool)
