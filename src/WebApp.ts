@@ -43,6 +43,6 @@ export default class WebApp {
         setupRoutes(app);
 
         const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => Logger.log(`Example app is listening on port ${PORT}.`));
+        app.listen(PORT, () => Logger.log(`Blighter listening on port ${PORT}.`));
     }
 }
