@@ -70,6 +70,13 @@ export default function setupFeedItemRoutes(app: Express) {
     app.post('/item', async (req, res) => {
         await WebUtils.defaultReqHandling(req, res, async () => {
             let {url, title} = (req.body as { url: string, title?: string })
+            try {
+                const parsed = new URL(url);
+                for (const key of [...parsed.searchParams.keys()])
+                    if (key.startsWith('utm_'))
+                        parsed.searchParams.delete(key);
+                url = parsed.toString();
+            } catch { /* leave url as-is if unparseable */ }
             const domain = ReadingListItemDB.getDomain(url);
 
             if (!title)
