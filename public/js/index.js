@@ -39,7 +39,7 @@ window.onload = async () => {
         const link = createElement('a', {
             href: item.link,
             target: '_blank',
-            innerText: item.title
+            innerText: item.title || '(untitled)'
         });
         const span = getSpan(new Date(item.pubDate).toString() + " - ");
         const a2 = createElement('a', {
