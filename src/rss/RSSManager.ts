@@ -188,7 +188,7 @@ export default class RSSManager {
             title: item.title,
             link: item.id,
             categories: null,
-            author: item.author.name,
+            author: item.author ? (item.author.name || '') : '',
             pubDate: item.published,
             description: item.summary || '',
             feedID: feed.id,

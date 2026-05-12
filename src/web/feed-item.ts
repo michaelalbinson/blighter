@@ -75,10 +75,15 @@ export default function setupFeedItemRoutes(app: Express) {
                 for (const key of [...parsed.searchParams.keys()])
                     if (key.startsWith('utm_'))
                         parsed.searchParams.delete(key);
+
                 url = parsed.toString();
             } catch { /* leave url as-is if unparseable */ }
-            const domain = ReadingListItemDB.getDomain(url);
 
+            const existing = await ReadingListItemDB.getByUrl(url);
+            if (existing)
+                return res.status(409).json({ reason: 'duplicate', title: existing.title || '' });
+
+            const domain = ReadingListItemDB.getDomain(url);
             if (!title)
                 title = await ReadingListItemDB.getArticleTitle(url);
 
@@ -93,10 +98,10 @@ export default function setupFeedItemRoutes(app: Express) {
                 await ReadingListItemDB.insert(rlItem);
             } catch (e) {
                 Logger.debug(e);
-                return res.status(400).send();
+                return res.status(400).json({ reason: 'failed' });
             }
 
-            res.status(200).redirect('back');
+            res.status(200).json({ title });
         });
     });
 }

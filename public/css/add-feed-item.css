@@ -1,0 +1,17 @@
+.status-msg {
+    display: none;
+    border: 1px solid var(--theme-1);
+    color: var(--theme-1);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.status-msg.visible {
+    display: block;
+}
+
+.status-msg.error {
+    border-color: #e05050;
+    color: #e05050;
+}

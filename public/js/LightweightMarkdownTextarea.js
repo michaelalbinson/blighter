@@ -58,7 +58,7 @@ class LightweightMarkdownTextarea {
         const currentIdx = this._element.selectionStart;
         const currentVal = this._element.value;
         const textLines = currentVal.split('\n');
-        if (currentIdx === currentVal.length) { // simplest case
+        if (currentIdx === currentVal.length) { // simplest case - we're on the last line
             const lastLine = currentVal.split('\n').slice(-2).shift();
             const nextLineListMarkup = this._parseForListMarkup(lastLine);
             this._element.value += nextLineListMarkup;

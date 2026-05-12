@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/footer.css" />
-    <script src="js/index.js"></script>
+    <link rel="stylesheet" href="css/add-feed-item.css" />
+    <script src="js/add-feed-item.js" defer></script>
 </head>
 <body>
 <header>
@@ -15,9 +16,10 @@
 </header>
 <main>
     <h2>Add to Reading List</h2>
-    <form method="post" action="/item">
+    <p id="status-msg" class="status-msg"></p>
+    <form id="add-form">
         <label for="url">Article URL</label>
-        <input id="url" name="url" type="url" />
+        <input id="url" name="url" type="url" required />
         <br />
         <br />
         <label for="title">Article Title (optional)</label>
