@@ -53,7 +53,7 @@ export default class RSSManager {
     }
 
     static processFeedToXML(feedData: string, url: string) {
-        const parser = new XMLParser();
+        const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: '@_'});
         let jObj = parser.parse(feedData);
         if (!(this.isRSSFeed(jObj) || this.isAtomFeed(jObj))) {
             const message = `Data from URL is malformed: ${url}`;
@@ -185,15 +185,47 @@ export default class RSSManager {
 
     static getAtomFeedItem(item: any, feed: Feed): FeedItem {
         return {
-            title: item.title,
-            link: item.id,
+            title: RSSManager.getTextContent(item.title),
+            link: RSSManager.extractAtomLink(item.link, item.id),
             categories: null,
             author: item.author ? (item.author.name || '') : '',
             pubDate: item.published,
-            description: item.summary || '',
+            description: RSSManager.getTextContent(item.summary) || '',
             feedID: feed.id,
             content: null
         } as FeedItem
+    }
+
+    // Atom feeds use <link rel="alternate" href="..."/> — attributes only, no text content.
+    // With attribute parsing enabled, this arrives as an object or array of objects.
+    // Fall back to item.id when link extraction fails (some Atom feeds use a real URL as id).
+    static extractAtomLink(link: any, id: string): string {
+        if (Array.isArray(link)) {
+            const alternate = link.find((l: any) => l?.['@_rel'] === 'alternate');
+            if (alternate?.['@_href']) return alternate['@_href'];
+            const first = link.find((l: any) => l?.['@_href']);
+            if (first?.['@_href']) return first['@_href'];
+        } else if (link && typeof link === 'object')
+            if (link['@_href']) return link['@_href'];
+        else if (typeof link === 'string' && link.startsWith('http'))
+            return link;
+
+        return id || '';
+    }
+
+    // Elements with attributes like <summary type="html">text</summary> parse as
+    // {#text: "...", @_type: "html"} when attribute parsing is on; plain strings otherwise.
+    static getTextContent(val: any): string {
+        if (!val)
+            return '';
+
+        if (typeof val === 'string')
+            return val;
+
+        if (typeof val === 'object')
+            return val['#text'] || '';
+
+        return String(val);
     }
 
     static parseCategories(categories: string[]|string): string {
