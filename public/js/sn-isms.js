@@ -10,7 +10,14 @@ window.onload = async () => {
 		abbr.innerText = item.abbr + ' ';
 		abbr.id = item.abbr;
 		const def = document.createElement('p');
-		def.innerHTML = item.def instanceof Array ? item.def.join('<br/><br/>') : item.def;
+		const defs = item.def instanceof Array ? item.def : [item.def];
+		defs.forEach((d, i) => {
+			if (i > 0) {
+				def.appendChild(document.createElement('br'));
+				def.appendChild(document.createElement('br'));
+			}
+			def.appendChild(document.createTextNode(d));
+		});
 
 		const sp = getSpan('');
 		const link = document.createElement('a');

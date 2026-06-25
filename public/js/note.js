@@ -33,7 +33,12 @@ window.onload = async () => {
         noteInput.value = note.content;
 
     const noteHeader = document.getElementById('article-info');
-    noteHeader.innerHTML = `Notes for: <a href="${itemData.link}" target="_blank">${itemData.title || '(untitled)'}</a>`;
+    const noteHeaderLink = document.createElement('a');
+    noteHeaderLink.href = itemData.link;
+    noteHeaderLink.target = '_blank';
+    noteHeaderLink.textContent = itemData.title || '(untitled)';
+    noteHeader.textContent = 'Notes for: ';
+    noteHeader.appendChild(noteHeaderLink);
     document.getElementById('itemId').value = urlParams.itemId;
 
     const readButton = document.getElementById('mark-read');
